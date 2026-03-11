@@ -237,7 +237,7 @@ export default function Home() {
       {[
         { id: "home",   icon: <HomeIcon />,   path: "/home" },
         { id: "grid",   icon: <GridIcon />,   path: "/ai" },
-        { id: "edit",   icon: <EditIcon />,   path: "/" },
+        { id: "edit",   icon: <EditIcon />,   path: "" },
         { id: "search", icon: <SearchIcon />, path: "/search" },
       ].map(item => (
         <button
