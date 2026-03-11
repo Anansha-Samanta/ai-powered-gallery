@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StarField = ({ count = 120, side = "dark" }) => {
   const stars = useRef(
@@ -13,6 +14,7 @@ const StarField = ({ count = 120, side = "dark" }) => {
     }))
   ).current;
 
+  
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {stars.map((star) => (
@@ -81,6 +83,7 @@ const SnowflakeIcon = ({ style = {} }) => (
 export default function Landing() {
   const [hovered, setHovered] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 100);
@@ -316,6 +319,7 @@ export default function Landing() {
         {/* ── RIGHT ARROW BUTTON ── */}
         <button
           className="arrow-btn"
+          onClick={() => navigate("/login")}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           style={{
@@ -365,7 +369,7 @@ export default function Landing() {
             textTransform: "uppercase",
           }}
         >
-          Landing
+         
         </div>
       </div>
     </div>
