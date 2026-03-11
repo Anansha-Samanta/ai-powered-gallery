@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // ── Star field ──────────────────────────────────────────────────────────────
 const StarField = ({ count = 150 }) => {
@@ -172,6 +173,7 @@ const TypingDots = () => (
 export default function AIPage() {
   const [activeNav, setActiveNav] = useState("grid");
   const [input, setInput] = useState("");
+  const navigate =  useNavigate();
   const [messages, setMessages] = useState([
     { id: 1, role: "user", text: "create an image of a scenic sunset" },
     { id: 2, role: "ai",   image: true },
@@ -363,15 +365,15 @@ export default function AIPage() {
 
         <div style={{ display: "flex", gap: 4 }}>
           {[
-            { id: "home",   icon: <HomeIcon /> },
-            { id: "grid",   icon: <GridIcon /> },
-            { id: "edit",   icon: <EditIcon /> },
-            { id: "search", icon: <SearchIcon /> },
+        { id: "home",   icon: <HomeIcon />,   path: "/home" },
+        { id: "grid",   icon: <GridIcon />,   path: "/ai" },
+        { id: "edit",   icon: <EditIcon />,   path: "/" },
+        { id: "search", icon: <SearchIcon />, path: "/search" },
           ].map(n => (
             <button
               key={n.id}
               className={`nav-btn${activeNav === n.id ? " active" : ""}`}
-              onClick={() => setActiveNav(n.id)}
+              onClick={() => {setActiveNav(n.id); navigate(item.path);}}
             >{n.icon}</button>
           ))}
         </div>

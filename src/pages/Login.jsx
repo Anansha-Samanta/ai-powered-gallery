@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StarField = ({ count = 160 }) => {
   const stars = useRef(
@@ -78,6 +79,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setLoaded(true), 80);
@@ -310,7 +312,7 @@ export default function Login() {
         </div>
 
         {/* Sign in button */}
-        <button className="signin-btn">Sign in</button>
+        <button className="signin-btn" onClick={() => navigate("/home")}>Sign in</button>
 
         {/* Or Continue With */}
         <div style={{
