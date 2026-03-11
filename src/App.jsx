@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Ai from "./pages/Search";
+import Ai from "./pages/Ai";
+import Search from "./pages/Search";
+
 
 
 function App() {
