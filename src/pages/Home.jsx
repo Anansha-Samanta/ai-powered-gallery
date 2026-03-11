@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // ── Star field ──────────────────────────────────────────────────────────────
 const StarField = ({ count = 140 }) => {
@@ -152,6 +153,7 @@ export default function Home() {
   const [activeNav, setActiveNav] = useState("home");
   const [loaded, setLoaded] = useState(false);
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
@@ -192,6 +194,7 @@ export default function Home() {
           color: rgba(255,255,255,0.45);
           border: none; background: transparent;
         }
+
         .nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.07); }
         .nav-item.active { color: white; background: rgba(255,255,255,0.12); }
         .nav-item.special { color: white; background: rgba(20,40,80,0.8); border: 1px solid rgba(255,255,255,0.15); }
@@ -226,30 +229,32 @@ export default function Home() {
         animation: loaded ? "fadeUp 0.6s ease both" : "none",
       }}>
         {/* Planet icon (left) */}
-        <button className="nav-item special" style={{ borderRadius: "50%" }}>
+        <button className="nav-item special" onClick={()=>navigate("/")} style={{ borderRadius: "50%" }}>
           <PlanetIcon />
         </button>
 
-        {/* Center nav */}
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          {[
-            { id: "home",   icon: <HomeIcon /> },
-            { id: "grid",   icon: <GridIcon /> },
-            { id: "edit",   icon: <EditIcon /> },
-            { id: "search", icon: <SearchIcon /> },
-          ].map(item => (
-            <button
-              key={item.id}
-              className={`nav-item${activeNav === item.id ? " active" : ""}`}
-              onClick={() => setActiveNav(item.id)}
-            >
-              {item.icon}
-            </button>
-          ))}
-        </div>
+ <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      {[
+        { id: "home",   icon: <HomeIcon />,   path: "/home" },
+        { id: "grid",   icon: <GridIcon />,   path: "/ai" },
+        { id: "edit",   icon: <EditIcon />,   path: "/" },
+        { id: "search", icon: <SearchIcon />, path: "/search" },
+      ].map(item => (
+        <button
+          key={item.id}
+          className={`nav-item${activeNav === item.id ? " active" : ""}`}
+          onClick={() => {
+            setActiveNav(item.id);  // update active state
+            navigate(item.path);    // navigate to route
+          }}
+        >
+          {item.icon}
+        </button>
+      ))}
+    </div>
 
         {/* User icon (right) */}
-        <button className="nav-item special" style={{ borderRadius: "50%" }}>
+        <button className="nav-item special" onClick={()=>navigate("/")} style={{ borderRadius: "50%" }}>
           <UserIcon />
         </button>
       </div>
