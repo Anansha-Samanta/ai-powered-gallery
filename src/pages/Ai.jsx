@@ -367,13 +367,13 @@ export default function AIPage() {
           {[
         { id: "home",   icon: <HomeIcon />,   path: "/home" },
         { id: "grid",   icon: <GridIcon />,   path: "/ai" },
-        { id: "edit",   icon: <EditIcon />,   path: "/" },
+        { id: "edit",   icon: <EditIcon />,   path: "" },
         { id: "search", icon: <SearchIcon />, path: "/search" },
           ].map(n => (
             <button
               key={n.id}
               className={`nav-btn${activeNav === n.id ? " active" : ""}`}
-              onClick={() => {setActiveNav(n.id); navigate(item.path);}}
+              onClick={() => {setActiveNav(n.id); navigate(n.path);}}
             >{n.icon}</button>
           ))}
         </div>
