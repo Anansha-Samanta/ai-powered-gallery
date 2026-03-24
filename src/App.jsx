@@ -4,8 +4,8 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Ai from "./pages/Ai";
 import Search from "./pages/Search";
-
-
+import Create from "./pages/Create";
+import SinglePic from "./pages/SinglePic";
 
 function App() {
   return (
@@ -16,6 +16,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/ai" element={<Ai />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/photo" element={<SinglePic />} />
     
       </Routes>
     </BrowserRouter>

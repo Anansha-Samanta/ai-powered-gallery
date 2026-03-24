@@ -32,13 +32,13 @@ const StarField = ({ count = 140 }) => {
 
 // ── Nav icons ────────────────────────────────────────────────────────────────
 const PlanetIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="6"/>
     <ellipse cx="12" cy="12" rx="11" ry="4.5" stroke="currentColor" strokeWidth="1.5"/>
   </svg>
 );
 const HomeIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
     <path d="M9 21V12h6v9"/>
   </svg>
@@ -111,14 +111,18 @@ const GROUPS = [
 ];
 
 // ── Photo tile ────────────────────────────────────────────────────────────────
-const Photo = ({ photo, size = "sm" }) => {
+const Photo = ({ photo, size = "sm", photos, index  }) => {
+  const navigate = useNavigate();
   const sizes = {
     sm:   { width: 70,  height: 70 },
     md:   { width: 90,  height: 90 },
     wide: { width: 160, height: 140 },
     tall: { width: 80,  height: 110 },
   };
+
+
   const dim = sizes[size];
+  
   return (
     <div style={{
       width: dim.width, height: dim.height,
@@ -138,6 +142,13 @@ const Photo = ({ photo, size = "sm" }) => {
       e.currentTarget.style.transform = "scale(1)";
       e.currentTarget.style.boxShadow = "none";
     }}
+    onClick={() => navigate("/photo", {
+    state: {
+    photo: photo,
+    photos: photos,   
+    index: index,
+  }
+})}
     >
       {/* Subtle texture overlay */}
       <div style={{
@@ -237,7 +248,7 @@ export default function Home() {
       {[
         { id: "home",   icon: <HomeIcon />,   path: "/home" },
         { id: "grid",   icon: <GridIcon />,   path: "/ai" },
-        { id: "edit",   icon: <EditIcon />,   path: "" },
+        { id: "edit",   icon: <EditIcon />,   path: "/create" },
         { id: "search", icon: <SearchIcon />, path: "/search" },
       ].map(item => (
         <button
@@ -312,10 +323,10 @@ export default function Home() {
               }}>
                 {group.photos.map((photo, pi) => {
                   // First group: first photo is wide
-                  if (gi === 0 && pi === 0) return <Photo key={photo.id} photo={photo} size="wide" />;
+                  if (gi === 0 && pi === 0) return <Photo key={photo.id} photo={photo} size="wide" photos={group.photos} index={pi}/>;
                   // First group: photos 1-2 stacked vertically
-                  if (gi === 0 && (pi === 1 || pi === 2)) return <Photo key={photo.id} photo={photo} size="sm" />;
-                  return <Photo key={photo.id} photo={photo} size="sm" />;
+                  if (gi === 0 && (pi === 1 || pi === 2)) return <Photo key={photo.id} photo={photo} size="sm" photos={group.photos} index={pi}/>;
+                  return <Photo key={photo.id} photo={photo} size="sm" photos={group.photos} index={pi} />;
                 })}
               </div>
 
