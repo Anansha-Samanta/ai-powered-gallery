@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Ai from "./pages/Ai";
 import Search from "./pages/Search";
 import Create from "./pages/Create";
+import AlbumMake from "./pages/AlbumMake";
+import CollageMake from "./pages/CollageMake";
 import SinglePic from "./pages/SinglePic";
 
 function App() {
@@ -18,7 +20,8 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/create" element={<Create />} />
         <Route path="/photo" element={<SinglePic />} />
-    
+        <Route path="/collage" element={<CollageMake />} />
+        <Route path="/album" element={<AlbumMake />} />
       </Routes>
     </BrowserRouter>
   );

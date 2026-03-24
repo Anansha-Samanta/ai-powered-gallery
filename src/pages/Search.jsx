@@ -267,7 +267,9 @@ export default function SearchPage() {
         opacity: loaded ? 1 : 0,
         animation: loaded ? "fadeUp 0.5s ease both" : "none",
       }}>
-        <button className="nav-btn special"><PlanetIcon /></button>
+        <button className="nav-btn special" onClick={() => navigate("/home")} style={{ borderRadius: "50%" }}>
+          <PlanetIcon />
+        </button>
         <div style={{ display: "flex", gap: 4 }}>
           {[
 { id: "home",   icon: <HomeIcon />,   path: "/home" },
