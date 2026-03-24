@@ -272,7 +272,7 @@ export default function SearchPage() {
           {[
 { id: "home",   icon: <HomeIcon />,   path: "/home" },
         { id: "grid",   icon: <GridIcon />,   path: "/ai" },
-        { id: "edit",   icon: <EditIcon />,   path: "" },
+        { id: "edit",   icon: <EditIcon />,   path: "/create" },
         { id: "search", icon: <SearchIconSVG />, path: "/search" },
           ].map(n => (
             <button key={n.id}
