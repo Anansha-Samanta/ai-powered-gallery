@@ -173,12 +173,14 @@ const PhotoCard = ({ item, index }) => {
 };
 
 // ── Sidebar Action Button ─────────────────────────────────────────────────────
-const SidebarBtn = ({ icon, label, delay = 0 }) => {
+const SidebarBtn = ({ icon, label, delay = 0, onClick }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <button
+      onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      
       style={{
         display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
         background: hovered ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
@@ -286,7 +288,7 @@ export default function Create() {
         opacity: loaded ? 1 : 0,
         animation: loaded ? "fadeUp 0.6s ease both" : "none",
       }}>
-        <button className="nav-item special" onClick={() => navigate("/")} style={{ borderRadius: "50%" }}>
+        <button className="nav-item special" onClick={() => navigate("/home")} style={{ borderRadius: "50%" }}>
           <PlanetIcon />
         </button>
 
@@ -336,9 +338,9 @@ export default function Create() {
             <span style={{ color: "rgba(255,255,255,0.4)" }}><PlaneIcon /></span>
           </div>
 
-          <SidebarBtn icon={<NewAlbumIcon />} label="new album" delay={0.1} />
-          <SidebarBtn icon={<NewCollageIcon />} label="new collage" delay={0.18} />
-        </div>
+          <SidebarBtn icon={<NewAlbumIcon />}   label="new album"   delay={0.1}  onClick={() => navigate("/album")} />
+          <SidebarBtn icon={<NewCollageIcon />} label="new collage" delay={0.18} onClick={() => navigate("/collage")} />        
+          </div>
 
         {/* ── MAIN CONTENT ── */}
         <div style={{
