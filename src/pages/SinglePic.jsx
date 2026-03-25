@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// ── Star field ────────────────────────────────────────────────────────────────
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -238,8 +237,8 @@ export default function SinglePic() {
           backdropFilter: "blur(10px)",
         }}>
           <SideBtn icon={<ShareIcon />}   label="share"  delay={0.1} />
-          <SideBtn icon={<EditIcon2 />}   label="edit"   delay={0.16} />
-          <SideBtn icon={<ZoomIcon />}    label="zoom"   delay={0.22} onClick={() => setZoomed(z => !z)} />
+          <SideBtn icon={<EditIcon2 />} label="edit" delay={0.16} onClick={() => { navigate("/editphoto", { state: { photo } }); }} />
+<SideBtn icon={<ZoomIcon />}    label="zoom"   delay={0.22} onClick={() => setZoomed(z => !z)} />
           <div style={{ flex: 1 }} />
           <SideBtn icon={<TrashIcon />}   label="trash"  delay={0.28} danger />
           <SideBtn icon={<AlbumAddIcon />} label="album" delay={0.34} />

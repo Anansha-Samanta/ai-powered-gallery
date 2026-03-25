@@ -292,7 +292,7 @@ export default function Home() {
     </div>
 
         {/* User icon (right) */}
-        <button className="nav-item special" onClick={()=>navigate("/")} style={{ borderRadius: "50%" }}>
+        <button className="nav-item special" onClick={()=>navigate("/profile")} style={{ borderRadius: "50%" }}>
           <UserIcon />
         </button>
       </div>

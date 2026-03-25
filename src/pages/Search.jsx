@@ -315,7 +315,9 @@ export default function SearchPage() {
             >{n.icon}</button>
           ))}
         </div>
-        <button className="nav-btn special"><UserIcon /></button>
+        <button className="nav-btn special" onClick={() => navigate("/profile")} style={{ borderRadius: "50%" }}>
+          <UserIcon />
+        </button>
       </div>
 
       {/* ── SEARCH SECTION ── */}

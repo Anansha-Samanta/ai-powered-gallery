@@ -324,7 +324,7 @@ export default function Profile() {
         opacity: loaded ? 1 : 0,
         animation: loaded ? "fadeUp 0.5s ease both" : "none",
       }}>
-        <button className="nav-item special" onClick={() => navigate("/")} style={{ borderRadius: "50%" }}>
+        <button className="nav-item special" onClick={() => navigate("/home")} style={{ borderRadius: "50%" }}>
           <PlanetIcon />
         </button>
 
