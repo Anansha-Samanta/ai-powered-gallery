@@ -47,7 +47,7 @@ const OrbitIcon = ({ style = {} }) => (
     <ellipse
       cx="20"
       cy="20"
-      rx="18"
+      rx="18" 
       ry="9"
       stroke="currentColor"
       strokeWidth="1.5"

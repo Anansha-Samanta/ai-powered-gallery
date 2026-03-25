@@ -1,7 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import searchgrid8 from "../assets/searchgrid8.jfif";
+import searchgrid9 from "../assets/searchgrid9.jfif";
+import searchgrid2 from "../assets/searchgrid2.jfif";
+import searchgrid7 from "../assets/searchgrid7.jfif";
+import flower1 from "../assets/flower1.png";
+import flower6 from "../assets/flower6.jfif";
+import home1 from "../assets/home1.jfif";
 
-// ── Star field ──────────────────────────────────────────────────────────────
+import searchgrid3 from "../assets/searchgrid3.jfif";
+import searchgrid1 from "../assets/searchgrid1.jfif";
+import searchgrid5 from "../assets/searchgrid5.jfif";
+import searchgrid4 from "../assets/searchgrid4.jfif";
+import flower3 from "../assets/flower3.jfif";
+import flower4 from "../assets/flower4.jfif";
+
+import searchgrid6 from "../assets/searchgrid6.jfif";
+import flower2 from "../assets/flower2.jfif";
+import flower5 from "../assets/flower5.jfif";
+
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -30,7 +47,6 @@ const StarField = ({ count = 140 }) => {
   );
 };
 
-// ── Nav icons ────────────────────────────────────────────────────────────────
 const PlanetIcon = () => (
   <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="6"/>
@@ -75,37 +91,36 @@ const PlaneIcon = () => (
   </svg>
 );
 
-// ── Sample photo groups ───────────────────────────────────────────────────────
 const GROUPS = [
   {
     date: "WED, 6-2-26",
     photos: [
-      { id: 1, bg: "linear-gradient(135deg,#5a7a3a,#8ab060,#c9b84c)", wide: true, label: "Meadow" },
-      { id: 2, bg: "linear-gradient(135deg,#c8a96e,#e8c87c)", wide: false, label: "Room" },
-      { id: 3, bg: "linear-gradient(135deg,#4a6a2a,#6a8a4a,#9ab070)", wide: false, label: "Forest" },
-      { id: 4, bg: "linear-gradient(135deg,#c87a8a,#e89aaa)", wide: false, label: "Anime" },
-      { id: 5, bg: "linear-gradient(135deg,#d4864a,#e8aa6a,#c86040)", wide: false, label: "Flowers" },
-      { id: 6, bg: "linear-gradient(135deg,#3a5068,#6080a0)", wide: false, label: "Sunflower" },
-      { id: 7, bg: "linear-gradient(135deg,#7a4060,#9a6080)", wide: false, label: "Sunset" },
+      { id: 1, src: flower1, wide: true, label: "flower" },
+      { id: 2, src: home1, wide: false, label: "ocean" },
+      { id: 3, src: searchgrid2, wide: false, label: "Candle" },
+      { id: 4, src: searchgrid8, wide: false, label: "starfish" },
+      { id: 5, src: searchgrid9, wide: false, label: "sunset" },
+      { id: 6, src: searchgrid7, wide: false, label: "fish" },
+      { id: 7, src: flower6, wide: false, label: "meadow" },
     ],
   },
   {
     date: "THURS, 7-2-26",
     photos: [
-      { id: 8, bg: "linear-gradient(135deg,#8a6a4a,#b08a6a)", wide: false, label: "Vintage" },
-      { id: 9, bg: "linear-gradient(135deg,#604030,#805040)", wide: false, label: "Wood" },
-      { id: 10, bg: "linear-gradient(135deg,#2a5a2a,#4a8a4a,#6aaa6a)", wide: false, label: "Forest2" },
-      { id: 11, bg: "linear-gradient(135deg,#6a5a3a,#9a8a5a)", wide: false, label: "Brown" },
-      { id: 12, bg: "linear-gradient(135deg,#e8e0c0,#f0f0d0)", wide: false, label: "Daisies" },
-      { id: 13, bg: "linear-gradient(135deg,#406040,#608060)", wide: true, label: "GreenField" },
+      { id: 8, src: searchgrid3, wide: true, label: "balloons" },
+      { id: 9, src: searchgrid1, wide: false, label: "ocean" },
+      { id: 10, src: searchgrid5, wide: false, label: "aesthetic" },
+      { id: 11, src: searchgrid4, wide: false, label: "candle" },
+      { id: 12, src: flower3, wide: false, label: "flower" },
+      { id: 13, src: flower4, wide: false, label: "flower" },
     ],
   },
   {
     date: "FRI, 8-2-26",
     photos: [
-      { id: 14, bg: "linear-gradient(135deg,#c87840,#d8985a,#e0b070)", wide: false, label: "OrangeFlowers" },
-      { id: 15, bg: "linear-gradient(135deg,#8a6090,#6040a0,#9070c0)", wide: false, label: "PinkFlowers" },
-      { id: 16, bg: "linear-gradient(135deg,#4060a0,#806080,#c08060)", wide: true, label: "Mountain" },
+      { id: 14, src: searchgrid6, wide: false, label: "bug" },
+      { id: 15, src: flower2, wide: false, label: "flower" },
+      { id: 16, src: flower5, wide: true, label: "flower" },
     ],
   },
 ];
@@ -127,7 +142,6 @@ const Photo = ({ photo, size = "sm", photos, index  }) => {
     <div style={{
       width: dim.width, height: dim.height,
       borderRadius: 8,
-      background: photo.bg,
       flexShrink: 0,
       position: "relative",
       overflow: "hidden",
@@ -150,12 +164,25 @@ const Photo = ({ photo, size = "sm", photos, index  }) => {
   }
 })}
     >
+
+        <img
+        src={photo.src}
+        alt="flower"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
+
+
       {/* Subtle texture overlay */}
       <div style={{
         position: "absolute", inset: 0,
         background: "linear-gradient(160deg, rgba(255,255,255,0.08) 0%, transparent 60%)",
       }} />
     </div>
+    
   );
 };
 

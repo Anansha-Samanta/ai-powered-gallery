@@ -1,7 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// ── Star field ────────────────────────────────────────────────────────────────
+import searchgrid1 from "../assets/searchgrid1.jfif";
+import searchgrid2 from "../assets/searchgrid2.jfif";
+import searchgrid3 from "../assets/searchgrid3.jfif";
+import searchgrid4 from "../assets/searchgrid4.jfif";
+import searchgrid5 from "../assets/searchgrid5.jfif";
+import searchgrid6 from "../assets/searchgrid6.jfif";
+import searchgrid7 from "../assets/searchgrid7.jfif";
+import searchgrid8 from "../assets/searchgrid8.jfif";
+
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -65,16 +73,16 @@ export default function AlbumMake() {
   const [showGallery, setShowGallery] = useState(false);
   const [dropHov, setDropHov] = useState(false);
 
-  const GALLERY = [
-    { id: 1, bg: "linear-gradient(135deg,#1a1e3a,#3a4080,#6060b0)" },
-    { id: 2, bg: "linear-gradient(135deg,#2a1030,#6a3070,#a060a0)" },
-    { id: 3, bg: "linear-gradient(135deg,#101a10,#204020,#406040)" },
-    { id: 4, bg: "linear-gradient(135deg,#3a2010,#7a5020,#c08040)" },
-    { id: 5, bg: "linear-gradient(135deg,#0a1a2a,#204060,#406080)" },
-    { id: 6, bg: "linear-gradient(135deg,#2a0a1a,#601030,#a04060)" },
-    { id: 7, bg: "linear-gradient(135deg,#1a2a3a,#2a4a5a,#4a7a8a)" },
-    { id: 8, bg: "linear-gradient(135deg,#2a2a1a,#4a4a2a,#7a7a40)" },
-  ];
+const GALLERY = [
+  { id: 1, src: searchgrid1 },
+  { id: 2, src: searchgrid2 },
+  { id: 3, src: searchgrid3 },
+  { id: 4, src: searchgrid4 },
+  { id: 5, src: searchgrid5 },
+  { id: 6, src: searchgrid6 },
+  { id: 7, src: searchgrid7 },
+  { id: 8, src: searchgrid8 },
+];
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
@@ -309,7 +317,9 @@ export default function AlbumMake() {
                     key={photo.id}
                     style={{
                       aspectRatio: "1/1", borderRadius: 10,
-                      background: photo.bg, position: "relative",
+                      backgroundImage: `url(${photo.src})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center", position: "relative",
                       overflow: "hidden", cursor: "pointer",
                       animation: `fadeUp 0.4s ${i * 0.06}s both ease`,
                     }}
@@ -477,7 +487,9 @@ export default function AlbumMake() {
                   onClick={() => handlePickPhoto(photo)}
                   style={{
                     aspectRatio: "1/1", borderRadius: 10,
-                    background: photo.bg, cursor: "pointer",
+                    backgroundImage: `url(${photo.src})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center", cursor: "pointer",
                     transition: "transform 0.18s, box-shadow 0.18s",
                     border: photos.find(p => p.id === photo.id)
                       ? "2px solid rgba(100,180,255,0.6)"

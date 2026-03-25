@@ -15,9 +15,6 @@ import searchgrid6 from "../assets/searchgrid6.jfif";
 import searchgrid7 from "../assets/searchgrid7.jfif";
 import searchgrid8 from "../assets/searchgrid8.jfif";
 import searchgrid9 from "../assets/searchgrid9.jfif";
-import home1 from "../assets/home1.jfif";
-import home2 from "../assets/home2.webp";
-
 
 const StarField = ({ count = 150 }) => {
   const stars = useRef(
@@ -109,7 +106,7 @@ const GRID_PHOTOS = [
   { id: 9, src: searchgrid9 },
 ];
 
-const SUGGESTIONS = ["flowers", "sunset", "forest", "ocean"];
+const SUGGESTIONS = ["flowers", "sunset", "anime", "forest", "galaxy", "portrait", "mountains", "ocean"];
 
 const PhotoTile = ({ photo, onClick }) => {
   const isWide = photo.size === "wide";
@@ -190,19 +187,20 @@ export default function SearchPage() {
     if (!trimmed) { setResults([]); return; }
     // Simulate filtering with colour-themed results
     const palettes = {
-      flower:   [flower1, flower2, flower3, flower4, flower5, flower6],
-      sunset:   [searchgrid9],
-      forest:   [flower6, home2],
-      ocean:  [home1, searchgrid1, searchgrid7],
-      default: [flower1, flower2, flower3],
+      flower:   ["#5a7a3a,#8ab060,#c9b84c", "#3a4a2a,#5a6a3a,#8a9a5a", "#c87840,#d8985a,#e0b070", "#e8e0c0,#f0ead8,#d8d0b0", "#8a6a4a,#b0906a,#c8a880", "#d4704a,#e89060,#c06040"],
+      sunset:   ["#ff6b35,#ff8c42,#c06030", "#8b4513,#ff6b35,#ffb347", "#3a5068,#ff6b35,#8b3a13", "#c86040,#e08050,#a04020", "#d4864a,#e8aa6a,#b07040", "#8a3020,#c05030,#e07050"],
+      anime:    ["#c87a8a,#e89aaa,#f0b0c0", "#7a4060,#9a6080,#b080a0", "#9a70b0,#b090d0,#d0b0e0", "#8060a0,#a080c0,#c0a0e0", "#6a4080,#8a60a0,#aa80c0", "#504070,#706090,#9080b0"],
+      forest:   ["#2a5a2a,#4a8a4a,#6aaa6a", "#1a4a1a,#3a7a3a,#5aaa5a", "#405a30,#608050,#809070", "#304820,#506840,#708860", "#3a6030,#5a8050,#7aa070", "#284018,#486038,#688058"],
+      galaxy:   ["#0a0a2a,#1a1a4a,#2a2a6a", "#0a102a,#1a2050,#2a3070", "#101840,#202860,#303880", "#0d1535,#1d2555,#2d3575", "#0a0f28,#1a1f48,#2a2f68", "#08102a,#18204a,#28306a"],
+      default:  ["#4a6a8a,#6a8aaa,#8aaaca", "#3a5a7a,#5a7a9a,#7a9aba", "#2a4a6a,#4a6a8a,#6a8aaa", "#506070,#708090,#90a0b0", "#405060,#607080,#8090a0", "#304050,#506070,#708090"],
     };
     const key = Object.keys(palettes).find(k => trimmed.includes(k)) || "default";
     const chosen = palettes[key];
     const sizes = ["wide", "sm", "sm", "sm", "sm", "sm"];
-    setResults(chosen.map((img, i) => ({
+    setResults(chosen.map((bg, i) => ({
       id: i + 1,
-      src: img, 
-      size: sizes[i] || "sm",
+      bg: `linear-gradient(160deg,#${bg.split(",")[0]?.trim() || "444"} 0%,#${bg.split(",")[1]?.trim() || "666"} 50%,#${bg.split(",")[2]?.trim() || "888"} 100%)`,
+      size: sizes[i],
     })));
   };
 
