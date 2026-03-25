@@ -8,6 +8,11 @@ import Create from "./pages/Create";
 import AlbumMake from "./pages/AlbumMake";
 import CollageMake from "./pages/CollageMake";
 import SinglePic from "./pages/SinglePic";
+import AlbumView from "./pages/AlbumView";
+import CollageView from "./pages/CollageView";
+import Profile from "./pages/Profile";
+import PhotoEdit from "./pages/PhotoEdit";
+
 
 function App() {
   return (
@@ -22,6 +27,11 @@ function App() {
         <Route path="/photo" element={<SinglePic />} />
         <Route path="/collage" element={<CollageMake />} />
         <Route path="/album" element={<AlbumMake />} />
+        <Route path="/viewcollage" element={<CollageView />} />
+        <Route path="/viewalbum" element={<AlbumView />} />
+        <Route path="/editphoto" element={<PhotoEdit />} />
+        <Route path="/profile" element={<Profile />} />
+        
       </Routes>
     </BrowserRouter>
   );
