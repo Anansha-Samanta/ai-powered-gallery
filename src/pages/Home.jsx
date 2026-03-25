@@ -47,25 +47,16 @@ const StarField = ({ count = 140 }) => {
   );
 };
 
-<<<<<<< HEAD
-const PlanetIcon = () => (
-  <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-=======
 // ── Nav icons (ONLY CHANGE: removed width & height) ─────────────────────────
 const PlanetIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
->>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
     <circle cx="12" cy="12" r="6"/>
     <ellipse cx="12" cy="12" rx="11" ry="4.5"/>
   </svg>
 );
 
 const HomeIcon = () => (
-<<<<<<< HEAD
-  <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-=======
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
->>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
     <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
     <path d="M9 21V12h6v9"/>
   </svg>
@@ -107,12 +98,6 @@ const PlaneIcon = () => (
   </svg>
 );
 
-<<<<<<< HEAD
-=======
-// ── (REST OF YOUR CODE REMAINS EXACTLY SAME) ────────────────────────────────
-
-// ── Sample photo groups ───────────────────────────────────────────────────────
->>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
 const GROUPS = [
   {
     date: "WED, 6-2-26",

@@ -88,7 +88,7 @@ const FALLBACK_PHOTOS = Array.from({ length: 12 }, (_, i) => ({
   bg: [
     decor1, decor2, decor3, decor4, decor5, decor6, decor12, decor7, decor8, decor9, decor10, decor11,
   ][i % 12],
-  label: `photo_${String(i + 1).padStart(2, "0")}`,
+  label: "decor",
 }));
 
 // ── Photo tile ────────────────────────────────────────────────────────────────

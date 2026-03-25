@@ -301,7 +301,7 @@ export default function Profile() {
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
         .nav-item {
           display: flex; align-items: center; justify-content: center;
-          width: 44px; height: 44px; border-radius: 50%;
+          width: 56px; height: 56px; border-radius: 50%;
           cursor: pointer; transition: background 0.2s ease, color 0.2s ease;
           color: rgba(255,255,255,0.45);
           border: none; background: transparent;
@@ -309,6 +309,10 @@ export default function Profile() {
         .nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.07); }
         .nav-item.active { color: white; background: rgba(255,255,255,0.12); }
         .nav-item.special { color: white; background: rgba(20,40,80,0.8); border: 1px solid rgba(255,255,255,0.15); }
+                  .nav-item svg {
+  width: 32px;
+  height: 32px;
+}
       `}</style>
 
       <StarField count={120} />
