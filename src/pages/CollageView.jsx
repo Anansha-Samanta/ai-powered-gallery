@@ -333,7 +333,7 @@ export default function CollageView() {
         }}>
           <SideBtn icon={<ShareIcon />}   label="share"    delay={0.1} />
           <SideBtn icon={<EditIcon />}    label="edit"     delay={0.16}
-            onClick={() => navigate("/collage-make", { state: { collage } })} />
+            onClick={() => navigate("/collage", { state: { collage } })} />
           <SideBtn
             icon={zoomed ? <ZoomOutIcon /> : <ZoomInIcon />}
             label={zoomed ? "fit" : "zoom"}
