@@ -358,6 +358,35 @@ export default function SinglePic() {
                 ‹
               </button>
             )}
+            {/* Next arrow */}
+{currentIndex < photos.length - 1 && (
+  <button
+    onClick={goNext}
+    style={{
+      position: "absolute",
+      right: -22,   // 👈 same spacing as left arrow
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: 36,
+      height: 36,
+      borderRadius: "50%",
+      background: "rgba(255,255,255,0.1)",
+      border: "1px solid rgba(255,255,255,0.18)",
+      color: "white",
+      fontSize: 18,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: "pointer",
+      backdropFilter: "blur(6px)",
+      transition: "background 0.2s",
+    }}
+    onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.2)"}
+    onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
+  >
+    ›
+  </button>
+)}
           </div>
         </div>
 
@@ -408,27 +437,6 @@ export default function SinglePic() {
           >
             back to gallery
           </div>
-
-          {/* Next arrow */}
-          {currentIndex < photos.length - 1 && (
-            <button
-              onClick={goNext}
-              style={{
-                width: 32, height: 32, borderRadius: "50%",
-                background: "rgba(255,255,255,0.1)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "white", fontSize: 17,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                cursor: "pointer",
-                transition: "background 0.2s",
-                marginTop: 12,
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.22)"}
-              onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
-            >
-              ›
-            </button>
-          )}
         </div>
       </div>
     </div>

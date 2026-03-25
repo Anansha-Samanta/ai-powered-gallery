@@ -47,10 +47,7 @@ const StarField = ({ count = 150 }) => {
   );
 };
 
-<<<<<<< HEAD
-=======
 // ── Nav Icons (UPDATED ONLY HERE) ───────────────────────────────────────────
->>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
 const PlanetIcon = () => (
   <svg className="planet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="6"/>
