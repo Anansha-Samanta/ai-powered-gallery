@@ -47,50 +47,72 @@ const StarField = ({ count = 140 }) => {
   );
 };
 
+<<<<<<< HEAD
 const PlanetIcon = () => (
   <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+=======
+// ── Nav icons (ONLY CHANGE: removed width & height) ─────────────────────────
+const PlanetIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+>>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
     <circle cx="12" cy="12" r="6"/>
-    <ellipse cx="12" cy="12" rx="11" ry="4.5" stroke="currentColor" strokeWidth="1.5"/>
+    <ellipse cx="12" cy="12" rx="11" ry="4.5"/>
   </svg>
 );
+
 const HomeIcon = () => (
+<<<<<<< HEAD
   <svg width="70%" height="70%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+=======
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+>>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
     <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
     <path d="M9 21V12h6v9"/>
   </svg>
 );
+
 const GridIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="3" y="3" width="7" height="7" rx="1"/>
     <rect x="14" y="3" width="7" height="7" rx="1"/>
     <rect x="3" y="14" width="7" height="7" rx="1"/>
     <rect x="14" y="14" width="7" height="7" rx="1"/>
   </svg>
 );
+
 const EditIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
   </svg>
 );
+
 const SearchIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="11" cy="11" r="7"/>
     <path d="M21 21l-4.35-4.35"/>
   </svg>
 );
+
 const UserIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="8" r="4"/>
     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
   </svg>
 );
+
 const PlaneIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+  <svg viewBox="0 0 24 24" fill="currentColor">
     <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
   </svg>
 );
 
+<<<<<<< HEAD
+=======
+// ── (REST OF YOUR CODE REMAINS EXACTLY SAME) ────────────────────────────────
+
+// ── Sample photo groups ───────────────────────────────────────────────────────
+>>>>>>> 3d0ab0eee84df7b9a9c750a3885a41d3d2601cb4
 const GROUPS = [
   {
     date: "WED, 6-2-26",
@@ -227,11 +249,15 @@ export default function Home() {
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
         .nav-item {
           display: flex; align-items: center; justify-content: center;
-          width: 44px; height: 44px; border-radius: 50%;
+          width: 56px; height: 56px; border-radius: 50%;
           cursor: pointer; transition: background 0.2s ease, color 0.2s ease;
           color: rgba(255,255,255,0.45);
           border: none; background: transparent;
         }
+          .nav-item svg {
+  width: 32px;
+  height: 32px;
+}
 
         .nav-item:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.07); }
         .nav-item.active { color: white; background: rgba(255,255,255,0.12); }

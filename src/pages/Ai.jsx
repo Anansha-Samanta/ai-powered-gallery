@@ -32,48 +32,57 @@ const StarField = ({ count = 150 }) => {
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 const PlanetIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="6"/>
     <ellipse cx="12" cy="12" rx="11" ry="4.5"/>
   </svg>
 );
+
 const HomeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
     <path d="M9 21V12h6v9"/>
   </svg>
 );
+
 const GridIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="3" y="3" width="7" height="7" rx="1"/>
     <rect x="14" y="3" width="7" height="7" rx="1"/>
     <rect x="3" y="14" width="7" height="7" rx="1"/>
     <rect x="14" y="14" width="7" height="7" rx="1"/>
   </svg>
 );
+
 const EditIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
   </svg>
 );
+
 const SearchIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="11" cy="11" r="7"/>
     <path d="M21 21l-4.35-4.35"/>
   </svg>
 );
+
 const UserIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="8" r="4"/>
     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
   </svg>
 );
+
+// ❌ DO NOT CHANGE BELOW (kept same)
+
 const AttachIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
   </svg>
 );
+
 const ImageIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -81,12 +90,14 @@ const ImageIcon = () => (
     <path d="M21 15l-5-5L5 21"/>
   </svg>
 );
+
 const SendIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
     <line x1="22" y1="2" x2="11" y2="13"/>
     <polygon points="22 2 15 22 11 13 2 9 22 2"/>
   </svg>
 );
+
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -94,6 +105,7 @@ const DownloadIcon = () => (
     <line x1="12" y1="15" x2="12" y2="3"/>
   </svg>
 );
+
 const SparkleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
@@ -239,11 +251,15 @@ export default function AIPage() {
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
         .nav-btn {
           display: flex; align-items: center; justify-content: center;
-          width: 42px; height: 42px; border-radius: 50%;
+          width: 56px; height: 56px; border-radius: 50%;
           cursor: pointer; border: none; background: transparent;
           color: rgba(255,255,255,0.45);
           transition: background 0.2s, color 0.2s;
         }
+          .nav-btn svg {
+  width: 32px;
+  height: 32px;
+}
         .nav-btn:hover  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
         .nav-btn.active { background: rgba(255,255,255,0.12); color: white; }
         .nav-btn.special {
