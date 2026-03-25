@@ -240,11 +240,18 @@ export default function AlbumView() {
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
-  const handlePhotoClick = (photo, index) => {
-    navigate("/photo", {
-      state: { photo, photos, index },
-    });
-  };
+const handlePhotoClick = (photo, index) => {
+  navigate("/photo", {
+    state: {
+      photo: {
+        ...photo,
+        src: photo.src || photo.bg, 
+      },
+      photos,
+      index,
+    },
+  });
+};
 
   return (
     <div style={{
