@@ -380,7 +380,9 @@ export default function AIPage() {
           ))}
         </div>
 
-        <button className="nav-btn special"><UserIcon /></button>
+                <button className="nav-btn special" onClick={() => navigate("/profile")} style={{ borderRadius: "50%" }}>
+          <UserIcon />
+        </button>
       </div>
 
       {/* ── CHAT AREA ── */}

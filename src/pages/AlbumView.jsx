@@ -114,7 +114,9 @@ const PhotoTile = ({ photo, index, onClick, viewMode }) => {
       >
         <div style={{
           width: 44, height: 44, borderRadius: 8,
-          background: photo.bg, flexShrink: 0,
+          backgroundImage: `url(${photo.bg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center", flexShrink: 0,
           position: "relative", overflow: "hidden",
         }}>
           <div style={{
@@ -147,7 +149,9 @@ const PhotoTile = ({ photo, index, onClick, viewMode }) => {
       style={{
         aspectRatio: "1/1",
         borderRadius: 10,
-        background: photo.bg,
+        backgroundImage: `url(${photo.bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         position: "relative", overflow: "hidden",
         cursor: "pointer",
         transform: hov ? "scale(1.04)" : "scale(1)",
@@ -228,7 +232,7 @@ export default function AlbumView() {
   const [cols, setCols] = useState(3);
 
   const album = location.state?.album || {
-    label: "friends",
+    label: "decor",
     bg: "linear-gradient(135deg,#2a2a2a,#4a4040,#6a5a50)",
     count: 12,
   };

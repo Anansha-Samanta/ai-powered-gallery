@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import decor1 from "../assets/decor1.jfif";
+import place1 from "../assets/place1.jfif";
 
-// ── Star field ──────────────────────────────────────────────────────────────
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -96,24 +97,20 @@ const NewCollageIcon = () => (
   </svg>
 );
 
-// ── Sample photo data ─────────────────────────────────────────────────────────
 const ALBUMS = [
-  { id: 1, bg: "linear-gradient(135deg,#2a2a2a,#4a4040,#6a5a50)", label: "friends", count: 24 },
-  { id: 2, bg: "linear-gradient(135deg,#1a2a1a,#3a4a3a,#5a6a50)", label: "food", count: 18 },
-  { id: 3, bg: "linear-gradient(135deg,#2a1a2a,#4a3040,#6a5060)", label: "chocolate", count: 18 },
+  { id: 1, src: decor1, label: "decor", count: 24 },
+  { id: 2, src: place1, label: "places", count: 18 },
 ];
 
 const COLLAGES = [
-  { id: 4, bg: "linear-gradient(135deg,#1e2a3a,#2a3a4a,#3a4a5a)", label: "friends", count: 6 },
-  { id: 5, bg: "linear-gradient(135deg,#2a1e1e,#3a2a2a,#4a3030)", label: "food", count: 4 },
-  { id: 6, bg: "linear-gradient(135deg,#1a1e2a,#2a2e3a,#3a3e50)", label: "chocolate", count: 18 },
+  { id: 6, bg: "linear-gradient(135deg,#1a1e2a,#2a2e3a,#3a3e50)", label: "food", count: 18 },
 ];
 
-// ── Photo Card ────────────────────────────────────────────────────────────────
-const PhotoCard = ({ item, index }) => {
+const PhotoCard = ({ item, index, onClick }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <div
+      onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -121,7 +118,9 @@ const PhotoCard = ({ item, index }) => {
         minWidth: 120,
         aspectRatio: "1 / 1",
         borderRadius: 12,
-        background: item.bg,
+        backgroundImage: `url(${item.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         position: "relative",
         overflow: "hidden",
         cursor: "pointer",
@@ -309,7 +308,7 @@ export default function Create() {
           ))}
         </div>
 
-        <button className="nav-item special" onClick={() => navigate("/")} style={{ borderRadius: "50%" }}>
+        <button className="nav-item special" onClick={() => navigate("/profile")} style={{ borderRadius: "50%" }}>
           <UserIcon />
         </button>
       </div>
@@ -329,7 +328,7 @@ export default function Create() {
           background: "rgba(10,18,34,0.5)",
           backdropFilter: "blur(8px)",
         }}>
-          {/* Plane + date hint */}
+          
           <div style={{
             display: "flex", alignItems: "center", gap: 5,
             marginBottom: 8,
@@ -342,7 +341,6 @@ export default function Create() {
           <SidebarBtn icon={<NewCollageIcon />} label="new collage" delay={0.18} onClick={() => navigate("/collage")} />        
           </div>
 
-        {/* ── MAIN CONTENT ── */}
         <div style={{
           flex: 1, overflowY: "auto", padding: "24px 20px 24px 24px",
           position: "relative",
@@ -353,7 +351,7 @@ export default function Create() {
             <SectionLabel text="albums :" delay={0.2} />
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {ALBUMS.map((item, i) => (
-                <PhotoCard key={item.id} item={item} index={i} />
+                <PhotoCard key={item.id} item={item} index={i} onClick={() => navigate("/viewalbum", { state: item })} />
               ))}
             </div>
           </div>
@@ -363,7 +361,7 @@ export default function Create() {
             <SectionLabel text="collages :" delay={0.35} />
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {COLLAGES.map((item, i) => (
-                <PhotoCard key={item.id} item={item} index={i + 3} />
+                <PhotoCard key={item.id} item={item} index={i + 3} onClick={() => navigate("/viewcollage", { state: item })} />
               ))}
             </div>
           </div>

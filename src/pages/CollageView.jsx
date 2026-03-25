@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import food1 from "../assets/food1.jfif";
+import food2 from "../assets/food2.jfif";
+import food3 from "../assets/food3.jfif";
+import food4 from "../assets/food4.jfif";
 
-// ── Star field ────────────────────────────────────────────────────────────────
+
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -30,7 +34,6 @@ const StarField = ({ count = 140 }) => {
   );
 };
 
-// ── Icons ─────────────────────────────────────────────────────────────────────
 const PlaneIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
     <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
@@ -74,18 +77,16 @@ const ZoomOutIcon = () => (
   </svg>
 );
 
-// ── Fallback collage data ─────────────────────────────────────────────────────
 const FALLBACK_COLLAGE = {
-  label: "friends",
+  label: "food",
   slots: [
-    { bg: "linear-gradient(135deg,#1a1e3a,#3a4080,#6060b0)" },
-    { bg: "linear-gradient(135deg,#2a1030,#6a3070,#a060a0)" },
-    { bg: "linear-gradient(135deg,#101a10,#204020,#406040)" },
-    { bg: "linear-gradient(135deg,#3a2010,#7a5020,#c08040)" },
+    { src: food1 },
+    { src: food2 },
+    { src: food3 },
+    { src: food4 },
   ],
 };
 
-// ── Sidebar button ────────────────────────────────────────────────────────────
 const SideBtn = ({ icon, label, onClick, danger = false, delay = 0, active = false }) => {
   const [hov, setHov] = useState(false);
   return (
@@ -116,16 +117,17 @@ const SideBtn = ({ icon, label, onClick, danger = false, delay = 0, active = fal
   );
 };
 
-// ── Collage Cell ──────────────────────────────────────────────────────────────
 const CollageCell = ({ slot, index, zoomed }) => {
   const [hov, setHov] = useState(false);
   return (
     <div
       onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseLeave={() => setHov(false)}  
       style={{
         borderRadius: zoomed ? 10 : 12,
-        background: slot ? slot.bg : "rgba(255,255,255,0.04)",
+        backgroundImage: `url(${slot.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         border: slot ? "none" : "1px dashed rgba(255,255,255,0.15)",
         position: "relative", overflow: "hidden",
         transition: "transform 0.22s ease, box-shadow 0.22s ease, border-radius 0.3s",
@@ -418,7 +420,7 @@ export default function CollageView() {
               </div>
             </div>
 
-            {/* Corner orbit decoration */}
+            {/* Corner orbit foodation */}
             <svg style={{
               position: "absolute", top: -24, right: -24,
               width: 80, height: 80, pointerEvents: "none", opacity: 0.35,

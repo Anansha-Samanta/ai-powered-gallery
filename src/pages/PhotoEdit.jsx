@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// ── Star field ────────────────────────────────────────────────────────────────
+
+
+
 const StarField = ({ count = 100 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -441,42 +443,28 @@ export default function PhotoEdit() {
               position: "relative",
             }}>
               {/* Photo with live filter */}
-              <div style={{
-                width: "min(300px, 45vw)",
-                aspectRatio: "3/4",
-                borderRadius: 6,
-                background: photo.bg,
-                overflow: "hidden",
-                position: "relative",
-                filter: cssFilter,
-                transition: "filter 0.3s ease",
-              }}>
-                {photo.src && (
-                  <img src={photo.src} alt={photo.label}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                )}
-                <div style={{
-                  position: "absolute", inset: 0,
-                  background: "linear-gradient(160deg,rgba(255,255,255,0.1) 0%,transparent 55%)",
-                  pointerEvents: "none",
-                }} />
-                {/* Vignette overlay */}
-                {adj.vignette > 0 && (
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: `radial-gradient(ellipse at center, transparent ${100 - adj.vignette}%, rgba(0,0,0,${adj.vignette / 200}) 100%)`,
-                    pointerEvents: "none",
-                  }} />
-                )}
-                {/* Fade overlay */}
-                {adj.fade > 0 && (
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: `rgba(255,255,255,${adj.fade / 300})`,
-                    pointerEvents: "none",
-                  }} />
-                )}
-              </div>
+<div style={{
+  width: "min(300px, 45vw)",
+  aspectRatio: "3/4",
+  borderRadius: 6,
+  overflow: "hidden",
+  position: "relative",
+  filter: cssFilter,
+  background: photo.src ? "none" : photo.bg, // 👈 fallback only
+}}>
+  {photo.src ? (
+    <img
+      src={photo.src}
+      alt={photo.label}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        display: "block"
+      }}
+    />
+  ) : null}
+</div>
 
               <div style={{
                 marginTop: 8, textAlign: "center",
