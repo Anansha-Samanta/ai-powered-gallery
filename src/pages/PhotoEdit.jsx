@@ -1,9 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-
-
-
 const StarField = ({ count = 100 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -548,7 +545,9 @@ export default function PhotoEdit() {
                     {/* Filter preview swatch */}
                     <div style={{
                       height: 70,
-                      background: photo.bg,
+                      backgroundImage: `url(${photo.bg})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                       filter: f.css,
                       position: "relative",
                     }}>

@@ -90,7 +90,7 @@
           <>
             <div style={{
               position: "absolute", inset: 0,
-              background: photo.bg,
+              background: `url(${photo.src}) center/cover no-repeat`,
             }} />
             <div style={{
               position: "absolute", inset: 0,

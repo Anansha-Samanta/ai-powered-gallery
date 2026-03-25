@@ -237,7 +237,16 @@ export default function SinglePic() {
           backdropFilter: "blur(10px)",
         }}>
           <SideBtn icon={<ShareIcon />}   label="share"  delay={0.1} />
-          <SideBtn icon={<EditIcon2 />} label="edit" delay={0.16} onClick={() => { navigate("/editphoto", { state: { photo } }); }} />
+          <SideBtn icon={<EditIcon2 />} label="edit" delay={0.16} onClick={() => {
+  navigate("/editphoto", {
+    state: {
+      photo: {
+        ...photo,
+        src: photo.src || photo.bg, 
+      },
+    },
+  });
+}} />
 <SideBtn icon={<ZoomIcon />}    label="zoom"   delay={0.22} onClick={() => setZoomed(z => !z)} />
           <div style={{ flex: 1 }} />
           <SideBtn icon={<TrashIcon />}   label="trash"  delay={0.28} danger />
@@ -293,7 +302,9 @@ export default function SinglePic() {
                 width: "min(400px, 60vw)",
                 aspectRatio: "3 / 4",
                 borderRadius: 8,
-                background: photo.bg,
+                backgroundImage: `url(${photo.bg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
                 position: "relative",
                 overflow: "hidden",
               }}>
