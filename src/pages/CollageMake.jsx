@@ -74,7 +74,7 @@
         onClick={() => !photo && onAdd(index)}
         style={{
           borderRadius: 14,
-          background: photo ? photo.bg : "rgba(255,255,255,0.04)",
+          background: photo ? `url(${photo.src}) center/cover no-repeat` : "rgba(255,255,255,0.04)",
           border: photo ? "none" : "1px dashed rgba(255,255,255,0.18)",
           position: "relative",
           overflow: "hidden",
