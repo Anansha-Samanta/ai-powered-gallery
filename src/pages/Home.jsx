@@ -4,7 +4,7 @@ import searchgrid8 from "../assets/searchgrid8.jfif";
 import searchgrid9 from "../assets/searchgrid9.jfif";
 import searchgrid2 from "../assets/searchgrid2.jfif";
 import searchgrid7 from "../assets/searchgrid7.jfif";
-import flower1 from "../assets/flower1.png";
+import flower1 from "../assets/flower1.jfif";
 import flower6 from "../assets/flower6.jfif";
 import home1 from "../assets/home1.jfif";
 
