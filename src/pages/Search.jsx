@@ -16,7 +16,7 @@ import searchgrid7 from "../assets/searchgrid7.jfif";
 import searchgrid8 from "../assets/searchgrid8.jfif";
 import searchgrid9 from "../assets/searchgrid9.jfif";
 import home1 from "../assets/home1.jfif";
-import home2 from "../assets/home2.webp";
+import home2 from "../assets/home2.jfif";
 
 
 const StarField = ({ count = 150 }) => {
