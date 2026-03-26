@@ -260,12 +260,11 @@ export default function Profile() {
 
   // Mock user data
   const user = {
-    name: "mikudomi",
-    handle: "@mikudomi",
+    name: "priya",
+    handle: "@priya",
     joined: "jan 2026",
-    photos: 47,
-    albums: 3,
-    collages: 6,
+    albums: 2,
+    collages: 1,
   };
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
