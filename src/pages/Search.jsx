@@ -29,45 +29,55 @@ const StarField = ({ count = 150 }) => {
   );
 };
 
-// ── Nav Icons ───────────────────────────────────────────────────────────────
+// ── Nav Icons (UPDATED ONLY HERE) ───────────────────────────────────────────
 const PlanetIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="12" r="6"/><ellipse cx="12" cy="12" rx="11" ry="4.5"/>
+  <svg className="planet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="12" cy="12" r="6"/>
+    <ellipse cx="12" cy="12" rx="11" ry="4.5"/>
   </svg>
 );
 const HomeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
     <path d="M9 21V12h6v9"/>
   </svg>
 );
+
 const GridIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="3" y="3" width="7" height="7" rx="1"/>
     <rect x="14" y="3" width="7" height="7" rx="1"/>
     <rect x="3" y="14" width="7" height="7" rx="1"/>
     <rect x="14" y="14" width="7" height="7" rx="1"/>
   </svg>
 );
+
 const EditIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
   </svg>
 );
+
 const SearchIconSVG = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="11" cy="11" r="7"/>
+    <path d="M21 21l-4.35-4.35"/>
   </svg>
 );
+
 const UserIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
   </svg>
 );
+
+// ❌ DO NOT CHANGE
 const XIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
 );
 
@@ -204,11 +214,19 @@ export default function SearchPage() {
         ::-webkit-scrollbar-track { background: transparent; }
         .nav-btn {
           display: flex; align-items: center; justify-content: center;
-          width: 42px; height: 42px; border-radius: 50%;
+          width: 56px; height: 56px; border-radius: 50%;
           cursor: pointer; border: none; background: transparent;
           color: rgba(255,255,255,0.45);
           transition: background 0.2s, color 0.2s;
         }
+          .nav-btn svg {
+  width: 32px;
+  height: 32px;
+}
+  .planet-icon {
+  width: 36px;
+  height: 36px;
+}
         .nav-btn:hover  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
         .nav-btn.active { background: rgba(255,255,255,0.13); color: white; }
         .nav-btn.special {
