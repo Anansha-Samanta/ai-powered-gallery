@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import flower1 from "../assets/flower1.png";
+import flower1 from "../assets/flower1.jfif";
 import flower2 from "../assets/flower2.jfif";
 import flower3 from "../assets/flower3.jfif";
 import flower4 from "../assets/flower4.jfif";
@@ -16,7 +16,7 @@ import searchgrid7 from "../assets/searchgrid7.jfif";
 import searchgrid8 from "../assets/searchgrid8.jfif";
 import searchgrid9 from "../assets/searchgrid9.jfif";
 import home1 from "../assets/home1.jfif";
-import home2 from "../assets/home2.webp";
+import home2 from "../assets/home2.jfif";
 
 
 const StarField = ({ count = 150 }) => {
