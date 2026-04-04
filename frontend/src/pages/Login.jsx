@@ -85,6 +85,38 @@ export default function Login() {
     setTimeout(() => setLoaded(true), 80);
   }, []);
 
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data || "Login failed");
+        return;
+      }
+
+      // ✅ store token + user
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.user._id);
+
+      navigate("/home");
+
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
+  };
+
   return (
     <div style={{
       width: "100vw",
@@ -312,7 +344,7 @@ export default function Login() {
         </div>
 
         {/* Sign in button */}
-        <button className="signin-btn" onClick={() => navigate("/home")}>Sign in</button>
+        <button className="signin-btn" onClick={handleLogin}>Sign in</button>
 
         {/* Or Continue With */}
         <div style={{
@@ -354,6 +386,7 @@ export default function Login() {
             letterSpacing: "0.04em",
             transition: "color 0.2s",
           }}
+          onClick={()=>navigate("/register")}
           onMouseEnter={e => e.target.style.color = "white"}
           onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.75)"}
           >

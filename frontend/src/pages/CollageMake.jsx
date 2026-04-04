@@ -154,6 +154,29 @@
       setShowGallery(true);
     };
 
+
+ const saveCollage = async () => {
+  const photos = slots.filter(Boolean).map(p => p.src);
+  if (photos.length === 0) return alert("Add at least one photo");
+
+  try {
+    const res = await fetch("http://localhost:8000/collages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: "hansa@gmail.com", title, photos }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "Failed to save collage");
+
+    alert(data.message + " (id: " + data.id + ")");
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save collage");
+  }
+};
+
+
     const handlePickPhoto = (photo) => {
       const newSlots = [...slots];
       newSlots[activeSlot] = photo;
@@ -309,6 +332,7 @@
                 animation: "fadeUp 0.45s 0.18s both ease",
                 zIndex: 1,
               }}
+              onClick={saveCollage}
               onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.9)"}
               onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.55)"}
             >
