@@ -12,6 +12,7 @@ import AlbumView from "./pages/AlbumView";
 import CollageView from "./pages/CollageView";
 import Profile from "./pages/Profile";
 import PhotoEdit from "./pages/PhotoEdit";
+import Register from "./pages/Register";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/viewalbum" element={<AlbumView />} />
         <Route path="/editphoto" element={<PhotoEdit />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/register" element={<Register />} />
         
       </Routes>
     </BrowserRouter>

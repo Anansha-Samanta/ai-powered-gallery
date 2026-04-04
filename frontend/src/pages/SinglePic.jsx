@@ -120,11 +120,63 @@ export default function SinglePic() {
 
   useEffect(() => { setTimeout(() => setLoaded(true), 60); }, []);
 
+const handleDelete = async () => {
+  try {
+    const confirmDelete = window.confirm("Delete this image?");
+    if (!confirmDelete) return;
+
+    const id = photo._id || photo.id;
+
+    if (!id) {
+      console.error("No ID found:", photo);
+      alert("Image ID missing");
+      return;
+    }
+
+    const res = await fetch(`http://localhost:5000/api/images/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) throw new Error("Delete failed");
+
+    // 🔥 REMOVE current image from array
+    const updatedPhotos = photos.filter((p) => (p._id || p.id) !== id);
+
+    // 🔥 CASE 1: no images left
+    if (updatedPhotos.length === 0) {
+      navigate("/home"); // go home
+      return;
+    }
+
+    // 🔥 CASE 2: decide next index
+    let newIndex = currentIndex;
+
+    // if we deleted last image → go to previous
+    if (currentIndex >= updatedPhotos.length) {
+      newIndex = updatedPhotos.length - 1;
+    }
+
+    // 🔥 navigate to next image
+    navigate("/photo", {
+      state: {
+        photo: updatedPhotos[newIndex],
+        photos: updatedPhotos,
+        index: newIndex,
+      },
+      replace: true,
+    });
+
+  } catch (err) {
+    console.error("DELETE ERROR:", err);
+  }
+};
+
+
   const goNext = () => {
     const next = currentIndex + 1;
     if (next < photos.length) {
       navigate("/photo", {
-        state: { photo: photos[next], photos, index: next },
+        state: { photo: { ...img, _id: img._id }, photos, index },
         replace: true,
       });
     }
@@ -249,7 +301,7 @@ export default function SinglePic() {
 }} />
 <SideBtn icon={<ZoomIcon />}    label="zoom"   delay={0.22} onClick={() => setZoomed(z => !z)} />
           <div style={{ flex: 1 }} />
-          <SideBtn icon={<TrashIcon />}   label="trash"  delay={0.28} danger />
+          <SideBtn icon={<TrashIcon />}   label="trash"  delay={0.28} danger onClick={handleDelete} />
           <SideBtn icon={<AlbumAddIcon />} label="album" delay={0.34} />
         </div>
 

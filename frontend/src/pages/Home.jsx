@@ -47,7 +47,6 @@ const StarField = ({ count = 140 }) => {
   );
 };
 
-// ── Nav icons (ONLY CHANGE: removed width & height) ─────────────────────────
 const PlanetIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="6"/>
@@ -98,6 +97,12 @@ const PlaneIcon = () => (
   </svg>
 );
 
+const uploadTile = {
+  id: "upload",
+  src: "https://via.placeholder.com/150?text=+",
+  label: "upload",
+};
+
 const GROUPS = [
   {
     date: "WED, 6-2-26",
@@ -132,7 +137,6 @@ const GROUPS = [
   },
 ];
 
-// ── Photo tile ────────────────────────────────────────────────────────────────
 const Photo = ({ photo, size = "sm", photos, index  }) => {
   const navigate = useNavigate();
   const sizes = {
@@ -163,11 +167,14 @@ const Photo = ({ photo, size = "sm", photos, index  }) => {
       e.currentTarget.style.transform = "scale(1)";
       e.currentTarget.style.boxShadow = "none";
     }}
-    onClick={() => navigate("/photo", {
-    state: {
-    photo: photo,
-    photos: photos,   
-    index: index,
+   onClick={() => navigate("/photo", {
+  state: {
+    photo: {
+      ...photo,
+      _id: photo._id,   
+    },
+    photos,
+    index,
   }
 })}
     >
@@ -202,6 +209,54 @@ export default function Home() {
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
+  
+
+
+
+
+  const [images, setImages] = useState([]);
+
+useEffect(() => {
+  const fetchImages = async () => {
+    const userId = localStorage.getItem("userId");
+
+    const res = await fetch(`http://localhost:5000/api/images/${userId}`);
+    const data = await res.json();
+
+    setImages(data);
+  };
+
+  fetchImages();
+}, []);
+const buildGroups = (images) => {
+  const groupsMap = {};
+
+  images.forEach((img) => {
+    const date = new Date(img.createdAt).toDateString(); // group by date
+
+    if (!groupsMap[date]) {
+      groupsMap[date] = [];
+    }
+
+    groupsMap[date].push({
+      id: img._id,
+      src: img.imageUrl,   // 🔥 Cloudinary URL
+      label: img.title || "image",
+      wide: false,
+    });
+  });
+
+  // convert to array format like your GROUPS
+  return Object.keys(groupsMap).map((date) => ({
+    date: date.toUpperCase(),
+    photos: groupsMap[date],
+  }));
+};
+
+
+
+
+
   const navItems = [
     { id: "planet", icon: <PlanetIcon />, special: true },
     { id: "home",   icon: <HomeIcon /> },
@@ -210,6 +265,31 @@ export default function Home() {
     { id: "search", icon: <SearchIcon /> },
     { id: "user",   icon: <UserIcon />, special: true },
   ];
+
+
+
+
+
+const handleUpload = async (file) => {
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("userId", localStorage.getItem("userId"));
+  formData.append("title", "demo");
+
+  const res = await fetch("http://localhost:5000/api/images/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+
+  // 🔥 Add this
+  setImages((prev) => [data, ...prev]);
+};
+
+
+
+
 
   return (
     <div style={{
@@ -282,6 +362,7 @@ export default function Home() {
           <PlanetIcon />
         </button>
 
+
  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
       {[
         { id: "home",   icon: <HomeIcon />,   path: "/home" },
@@ -302,11 +383,53 @@ export default function Home() {
       ))}
     </div>
 
-        {/* User icon (right) */}
-        <button className="nav-item special" onClick={()=>navigate("/profile")} style={{ borderRadius: "50%" }}>
-          <UserIcon />
-        </button>
+      
+
+<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+  
+  {/* Upload button */}
+  <button
+    className="nav-item"
+    onClick={() => document.getElementById("uploadInput").click()}
+    style={{
+      borderRadius: 20,
+      padding: "0 14px",
+      width: "auto",
+      gap: 6,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "white",
+      background: "rgba(255,255,255,0.08)",
+    }}
+  >
+    <span style={{ fontSize: 18 }}>＋</span>
+    <span style={{ fontSize: 12 }}>Upload</span>
+  </button>
+
+  {/* Profile button */}
+  <button
+    className="nav-item special"
+    onClick={() => navigate("/profile")}
+    style={{ borderRadius: "50%" }}
+  >
+    <UserIcon />
+  </button>
+
+</div>
       </div>
+
+
+
+
+<input
+  type="file"
+  style={{ display: "none" }}
+  id="uploadInput"
+  onChange={(e) => handleUpload(e.target.files[0])}
+/>
+
+
 
       {/* ── SCROLLABLE CONTENT ── */}
       <div ref={scrollRef} style={{
@@ -314,67 +437,137 @@ export default function Home() {
         position: "relative", zIndex: 10,
         padding: "20px 24px 32px",
       }}>
-        {GROUPS.map((group, gi) => (
-          <div
-            key={group.date}
-            className="group-section"
-            style={{
-              marginBottom: 28,
-              animationDelay: `${gi * 0.12}s`,
-              opacity: loaded ? undefined : 0,
-            }}
-          >
-            {/* Date label with plane icon */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 10,
-              marginBottom: 12,
-            }}>
-              {gi === 0 && (
-                <span style={{ color: "rgba(255,255,255,0.55)", display: "flex" }}>
-                  <PlaneIcon />
-                </span>
-              )}
-              <span style={{
-                fontSize: 11,
-                fontWeight: 500,
-                color: "rgba(255,255,255,0.45)",
-                letterSpacing: "0.12em",
-                fontFamily: "'Exo 2', sans-serif",
-              }}>
-                {group.date}
-              </span>
-            </div>
+{buildGroups(images).map((group, gi) => {
+const photosWithUpload =
+  gi === 0 ? [...group.photos, uploadTile] : group.photos;
+  return (
+    <div
+      key={group.date}
+      className="group-section"
+      style={{
+        marginBottom: 28,
+        animationDelay: `${gi * 0.12}s`,
+        opacity: loaded ? undefined : 0,
+      }}
+    >
+      {/* Date label */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 12,
+        }}
+      >
+        {gi === 0 && (
+          <span style={{ color: "rgba(255,255,255,0.55)", display: "flex" }}>
+            <PlaneIcon />
+          </span>
+        )}
 
-            {/* Photo row inside dashed border box */}
-            <div style={{
-              border: "1px dashed rgba(255,255,255,0.18)",
-              borderRadius: 10,
-              padding: "14px 14px 14px 14px",
-              position: "relative",
-              background: "rgba(255,255,255,0.02)",
-            }}>
-              <div style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 8,
-                alignItems: "flex-start",
-              }}>
-                {group.photos.map((photo, pi) => {
-                  // First group: first photo is wide
-                  if (gi === 0 && pi === 0) return <Photo key={photo.id} photo={photo} size="wide" photos={group.photos} index={pi}/>;
-                  // First group: photos 1-2 stacked vertically
-                  if (gi === 0 && (pi === 1 || pi === 2)) return <Photo key={photo.id} photo={photo} size="sm" photos={group.photos} index={pi}/>;
-                  return <Photo key={photo.id} photo={photo} size="sm" photos={group.photos} index={pi} />;
-                })}
-              </div>
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 500,
+            color: "rgba(255,255,255,0.45)",
+            letterSpacing: "0.12em",
+            fontFamily: "'Exo 2', sans-serif",
+          }}
+        >
+          {group.date}
+        </span>
+      </div>
 
-              {/* Scroll arrow for first group */}
-              {gi === 0 && (
-                <button className="scroll-btn">›</button>
-              )}
-            </div>
-          </div>
-        ))}
+      {/* Photo container */}
+      <div
+        style={{
+          border: "1px dashed rgba(255,255,255,0.18)",
+          borderRadius: 10,
+          padding: "14px",
+          position: "relative",
+          background: "rgba(255,255,255,0.02)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 8,
+            alignItems: "flex-start",
+          }}
+        >
+          {photosWithUpload.map((photo, pi) => {
+            // 🔥 Upload tile
+            if (photo.id === "upload") {
+              return (
+                <div
+                  key="upload"
+                  onClick={() =>
+                    document.getElementById("uploadInput").click()
+                  }
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "rgba(255,255,255,0.08)",
+                    color: "white",
+                    fontSize: 24,
+                    cursor: "pointer",
+                  }}
+                >
+                  +
+                </div>
+              );
+            }
+
+            // layout logic
+            if (gi === 0 && pi === 1) {
+              return (
+                <Photo
+                  key={photo.id}
+                  photo={photo}
+                  size="wide"
+                  photos={group.photos}
+                  index={pi}
+                />
+              );
+            }
+
+            if (gi === 0 && (pi === 2 || pi === 3)) {
+              return (
+                <Photo
+                  key={photo.id}
+                  photo={photo}
+                  size="sm"
+                  photos={group.photos}
+                  index={pi}
+                />
+              );
+            }
+
+            return (
+              <Photo
+                key={photo.id}
+                photo={photo}
+                size="sm"
+                photos={group.photos}
+                index={pi}
+              />
+            );
+          })}
+        </div>
+
+        {/* Scroll arrow */}
+        {gi === 0 && <button className="scroll-btn">›</button>}
+      </div>
+    </div>
+  );
+})}
+
+
       </div>
     </div>
   );

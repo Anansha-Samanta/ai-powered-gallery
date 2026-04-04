@@ -260,8 +260,8 @@ export default function Profile() {
 
   // Mock user data
   const user = {
-    name: "priya",
-    handle: "@priya",
+    name: "hansa",
+    handle: "hansa@gmail.com",
     joined: "jan 2026",
     albums: 2,
     collages: 1,
