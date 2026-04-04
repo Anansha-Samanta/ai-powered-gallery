@@ -1,6 +1,6 @@
   import { useState, useRef, useEffect } from "react";
   import { useNavigate } from "react-router-dom";
-  import flower1 from "../assets/flower1.png";
+  import flower1 from "../assets/flower1.jfif";
   import flower2 from "../assets/flower2.jfif";
   import flower3 from "../assets/flower3.jfif";
   import flower4 from "../assets/flower4.jfif";
