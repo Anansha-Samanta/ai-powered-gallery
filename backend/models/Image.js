@@ -32,6 +32,7 @@ const imageSchema = new mongoose.Schema({
     default: []
   },
 
+  // 🔥 USE THIS FOR AI CAPTION
   aiCaption: {
     type: String,
     default: ""

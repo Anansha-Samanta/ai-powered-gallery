@@ -12,14 +12,16 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/images", require("./routes/image"));
 
+// 🔥 ADD THIS LINE
+app.use("/api/ai", require("./routes/ai"));
+
 app.get("/", (req, res) => {
   res.send("API running");
 });
 
-// ✅ FIXED PART
 const startServer = async () => {
   try {
-    await connectDB();  // ✅ WAIT for DB
+    await connectDB();
 
     const PORT = process.env.PORT || 5000;
 
