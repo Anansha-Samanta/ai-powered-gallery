@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const upload = require("../middleware/upload");
-const { uploadImage, getUserImages } = require("../controllers/imageController");
-const { deleteImage } = require("../controllers/imageController");
 
-router.delete("/:id", deleteImage);
-router.post("/upload", upload.single("image"), uploadImage);
-router.get("/:userId", getUserImages);
+// 🔥 import full controller (safe way)
+const imageController = require("../controllers/imageController");
+
+router.post("/upload", upload.single("image"), imageController.uploadImage);
+router.get("/:userId", imageController.getUserImages);
+router.delete("/:id", imageController.deleteImage);
 
 module.exports = router;
