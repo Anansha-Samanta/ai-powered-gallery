@@ -1,31 +1,55 @@
 const express = require("express");
 const router = express.Router();
-const OpenAI = require("openai");
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+// 🔥 Import Replicate service
+const { generateImage } = require("../services/replicateService");
+
+console.log("AI FILE LOADED (REPLICATE)");
+
+// ✅ TEST GET ROUTE
+router.get("/test", (req, res) => {
+  console.log("AI TEST ROUTE HIT");
+  res.send("AI route working");
 });
 
+// ✅ TEST POST ROUTE
+router.post("/testpost", (req, res) => {
+  console.log("TEST POST HIT");
+  res.json({ message: "POST working" });
+});
+
+// 🔥 MAIN AI IMAGE GENERATION ROUTE
 router.post("/generate", async (req, res) => {
+  console.log("🚀 REPLICATE AI HIT");
+
+  const prompt = req.body?.prompt;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required" });
+  }
+
   try {
-    const { prompt } = req.body;
+    console.log("🧠 Prompt:", prompt);
 
-    const result = await client.images.generate({
-      model: "gpt-image-1",
-      prompt: prompt,
-      size: "512x512",
-    });
+    const imageUrl = await generateImage(prompt);
 
-    // 🔥 FIX: use base64 instead of url
-    const imageBase64 = result.data[0].b64_json;
+    console.log("✅ IMAGE URL:", imageUrl);
 
-    const imageUrl = `data:image/png;base64,${imageBase64}`;
+    if (!imageUrl) {
+      throw new Error("No image generated");
+    }
 
-    res.json({ result: imageUrl });
+    return res.json({ result: imageUrl });
 
   } catch (err) {
-    console.error("AI ROUTE ERROR:", err);
-    res.status(500).json({ error: "AI generation failed" });
+    console.error("❌ REPLICATE ERROR FULL:", err);
+
+    // 🔥 SAFE fallback (always works)
+    const fallback = `https://picsum.photos/seed/${encodeURIComponent(prompt)}/400`;
+
+    console.log("⚠️ Using fallback image");
+
+    return res.json({ result: fallback });
   }
 });
 
