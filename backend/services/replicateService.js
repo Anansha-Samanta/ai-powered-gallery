@@ -1,3 +1,4 @@
+
 const Replicate = require("replicate");
 
 const replicate = new Replicate({
@@ -7,8 +8,8 @@ const replicate = new Replicate({
 const generateImage = async (prompt) => {
   try {
     const output = await replicate.run(
-      // ✅ FULL MODEL VERSION (WORKING)
-      "stability-ai/sdxl:7762fd07cf82a77d5c88d0fd6b9b1f3f1c6fba58828a741b93d7c5edda6afcfd",
+      // ⚠️ Use model WITHOUT version (safer)
+      "stability-ai/sdxl",
       {
         input: {
           prompt: prompt,
