@@ -5,6 +5,12 @@
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
 }
 
 .add-member-card {
@@ -14,6 +20,7 @@
   padding: 40px;
   max-width: 500px;
   width: 100%;
+  margin: auto;
 }
 
 .add-member-title {
@@ -39,6 +46,7 @@
   font-size: 0.95rem;
   font-family: inherit;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
 .form-input:focus,
@@ -73,6 +81,7 @@
   background-color: white;
   font-size: 0.95rem;
   color: #666;
+  box-sizing: border-box;
 }
 
 .image-preview {
@@ -110,6 +119,10 @@
 }
 
 @media (max-width: 768px) {
+  .add-member-container {
+    padding: 20px 15px;
+  }
+
   .add-member-card {
     padding: 30px 20px;
   }
