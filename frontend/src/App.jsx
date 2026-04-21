@@ -14,12 +14,19 @@ import Profile from "./pages/Profile";
 import PhotoEdit from "./pages/PhotoEdit";
 import Register from "./pages/Register";
 
+// Team Management Pages
+import HomeNew from "./pages/HomeNew";
+import AddMember from "./pages/AddMember";
+import ViewMembers from "./pages/ViewMembers";
+import MemberDetails from "./pages/MemberDetails";
+
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/ai" element={<Ai />} />
@@ -33,6 +40,11 @@ function App() {
         <Route path="/editphoto" element={<PhotoEdit />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<Register />} />
+
+        <Route path="/" element={<HomeNew />} />
+        <Route path="/add-member" element={<AddMember />} />
+        <Route path="/view-members" element={<ViewMembers />} />
+        <Route path="/member/:id" element={<MemberDetails />} />
         
       </Routes>
     </BrowserRouter>
