@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './HomeNew.css';
+import '../styles/homeNew.css';
 
-const HomeNew = () => {
+const homeNew = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="homenew-container">
-      <div className="homenew-content">
+    <div className="home-container">
+      <div className="home-content">
         <h1 className="team-title">TEAM BLUE</h1>
         <p className="welcome-text">Welcome to the BLUE Team Management</p>
         
@@ -15,13 +15,13 @@ const HomeNew = () => {
           <h2 className="card-title">Manage Team</h2>
           <div className="button-group">
             <button 
-              className="homenew-button add-button"
+              className="home-button add-button"
               onClick={() => navigate('/add-member')}
             >
               Add<br/>Member
             </button>
             <button 
-              className="homenew-button view-button"
+              className="home-button view-button"
               onClick={() => navigate('/view-members')}
             >
               View<br/>Members
@@ -33,4 +33,4 @@ const HomeNew = () => {
   );
 };
 
-export default HomeNew;
+export default homeNew;
