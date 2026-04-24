@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import decor1 from "../assets/decor1.jfif";
 import place1 from "../assets/place1.jfif";
+import { fetchAlbums } from "../api/albumApi";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
@@ -101,10 +102,6 @@ const NewCollageIcon = () => (
   </svg>
 );
 
-const ALBUMS = [
-  { id: 1, src: decor1, label: "decor", count: 24 },
-  { id: 2, src: place1, label: "places", count: 18 },
-];
 
 const COLLAGES = [
   { id: 6, bg: "linear-gradient(135deg,#1a1e2a,#2a2e3a,#3a3e50)", label: "food", count: 18 },
@@ -237,9 +234,17 @@ const SectionLabel = ({ text, delay = 0 }) => (
 export default function Create() {
   const [activeNav, setActiveNav] = useState("edit");
   const [loaded, setLoaded] = useState(false);
+  const [albums, setAlbums] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+
+  useEffect(() => {
+  fetchAlbums()
+    .then(data => setAlbums(data))
+    .catch(console.error);
+}, []);
 
   return (
     <div style={{
@@ -358,9 +363,19 @@ export default function Create() {
           <div style={{ marginBottom: 28 }}>
             <SectionLabel text="albums :" delay={0.2} />
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {ALBUMS.map((item, i) => (
-                <PhotoCard key={item.id} item={item} index={i} onClick={() => navigate("/viewalbum", { state: item })} />
-              ))}
+{albums.map((item, i) => (
+  <PhotoCard
+    key={item._id}
+    item={{
+      ...item,
+      src: item.coverImage || decor1,   // fallback image
+      label: item.title,
+      count: item.images?.length || 0
+    }}
+    index={i}
+    onClick={() => navigate("/viewalbum", { state: { albumId: item._id } })}  // ✅ pass albumId
+  />
+))}
             </div>
           </div>
 

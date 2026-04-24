@@ -55,4 +55,4 @@ const imageSchema = new mongoose.Schema({
 imageSchema.index({ tags: 1 });
 imageSchema.index({ createdAt: -1 });
 
-module.exports = mongoose.model("Image", imageSchema);
+module.exports = mongoose.models.Image || mongoose.model("Image", imageSchema);

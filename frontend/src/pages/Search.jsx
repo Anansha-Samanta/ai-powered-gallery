@@ -192,30 +192,40 @@ export default function SearchPage() {
   const [focused, setFocused] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
-  const handleSearch = (q) => {
-    const trimmed = (q ?? query).trim().toLowerCase();
-    setQuery(trimmed);
-    if (!trimmed) { setResults([]); return; }
-    // Simulate filtering with colour-themed results
-    const palettes = {
-      flower:   [flower1, flower2, flower3, flower4, flower5, flower6],
-      sunset:   [searchgrid9],
-      forest:   [flower6, home2],
-      ocean:  [home1, searchgrid1, searchgrid7],
-      default: [flower1, flower2, flower3],
-    };
-    const key = Object.keys(palettes).find(k => trimmed.includes(k)) || "default";
-    const chosen = palettes[key];
-    const sizes = ["wide", "sm", "sm", "sm", "sm", "sm"];
-    setResults(chosen.map((img, i) => ({
-      id: i + 1,
-      src: img, 
-      size: sizes[i] || "sm",
-    })));
-  };
+
+const handleSearch = async (q) => {
+  const trimmed = (q ?? query).trim();
+  setQuery(trimmed);
+  if (!trimmed) { setResults([]); return; }
+
+  setLoading(true);
+  try {
+    const userId = localStorage.getItem("userId");
+    const res = await fetch(
+      `http://localhost:5000/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
+    );
+    const data = await res.json();
+
+    // Map backend images to the shape PhotoTile expects
+    const mapped = data.map((img, i) => ({
+      id: img._id,
+      src: img.imageUrl,
+      size: i === 0 ? "wide" : "sm",
+      label: img.title || img.aiCaption || "photo",
+    }));
+
+    setResults(mapped);
+  } catch (err) {
+    console.error("Search failed:", err);
+    setResults([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleClear = () => { setQuery(""); setResults([]); inputRef.current?.focus(); };
 

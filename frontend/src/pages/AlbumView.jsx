@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { fetchAlbum, deleteAlbum } from "../api/albumApi";
 import decor1 from "../assets/decor1.jfif";
 import decor2 from "../assets/decor2.jfif";
 import decor3 from "../assets/decor3.jfif";
@@ -230,15 +231,38 @@ export default function AlbumView() {
   const [loaded, setLoaded] = useState(false);
   const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
   const [cols, setCols] = useState(3);
-
-  const album = location.state?.album || {
-    label: "decor",
-    bg: "linear-gradient(135deg,#2a2a2a,#4a4040,#6a5a50)",
-    count: 12,
-  };
-  const photos = location.state?.photos || FALLBACK_PHOTOS;
+  const { albumId } = location.state || {};  // pass albumId when navigating here
+  const [album, setAlbum] = useState(null);
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+
+
+
+  useEffect(() => {
+  if (!albumId) {
+    console.error("No albumId passed in location.state!"); // ← will tell you if this is the issue
+    return;
+  }
+  fetchAlbum(albumId)
+    .then(data => {
+      setAlbum(data);
+      setPhotos(data.images.map(img => ({
+        id: img._id,
+        bg: img.imageUrl,
+        src: img.imageUrl,
+        label: img.title || img.aiCaption || "photo"
+      })));
+    })
+    .catch(console.error);
+}, [albumId]);
+
+// Wire up the trash button in SideBtn:
+const handleDelete = async () => {
+  if (!confirm("Delete this album?")) return;
+  await deleteAlbum(albumId);
+  navigate(-1);
+};
 
 const handlePhotoClick = (photo, index) => {
   navigate("/photo", {
@@ -252,6 +276,21 @@ const handlePhotoClick = (photo, index) => {
     },
   });
 };
+
+// Replace your entire "if (!album) return (...)" block with just this:
+if (!album) return (
+  <div style={{
+    width: "100vw", height: "100vh",
+    background: "linear-gradient(160deg, #0d1b2e 0%, #0a1525 50%, #060e1a 100%)",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    color: "rgba(255,255,255,0.3)",
+    fontFamily: "'Exo 2', sans-serif",
+    fontSize: 12, letterSpacing: "0.2em"
+  }}>
+    loading...
+  </div>
+);
+
 
   return (
     <div style={{
@@ -327,7 +366,7 @@ const handlePhotoClick = (photo, index) => {
             color: "white", letterSpacing: "0.1em",
             textTransform: "lowercase",
           }}>
-            {album.label}
+            {album.title}
           </span>
           <span style={{
             fontSize: 10, color: "rgba(255,255,255,0.35)",
@@ -382,7 +421,11 @@ const handlePhotoClick = (photo, index) => {
           {/* Album cover swatch */}
           <div style={{
             width: 40, height: 40, borderRadius: 10,
-            background: album.bg,
+            background: album.coverImage 
+  ? `url(${album.coverImage})` 
+  : "linear-gradient(135deg,#2a2a2a,#4a4040,#6a5a50)",
+backgroundSize: "cover",
+backgroundPosition: "center",
             marginBottom: 14, flexShrink: 0,
             border: "1px solid rgba(255,255,255,0.1)",
             animation: "fadeUp 0.4s 0.05s both ease",
@@ -397,7 +440,7 @@ const handlePhotoClick = (photo, index) => {
           <SideBtn icon={<EditIcon />}  label="edit"  delay={0.1} />
           <SideBtn icon={<ShareIcon />} label="share" delay={0.16} />
           <div style={{ flex: 1 }} />
-          <SideBtn icon={<TrashIcon />} label="trash" danger delay={0.22} />
+          <SideBtn icon={<TrashIcon />} label="trash" danger onClick={handleDelete} delay={0.22} />
         </div>
 
         {/* ── PHOTO GRID / LIST ── */}
@@ -501,7 +544,7 @@ const handlePhotoClick = (photo, index) => {
             fontFamily: "'Orbitron', sans-serif",
             textTransform: "uppercase",
           }}>
-            {album.label}&nbsp;&nbsp;✕&nbsp;&nbsp;album
+            {album.title}&nbsp;&nbsp;✕&nbsp;&nbsp;album
           </div>
         </div>
       </div>

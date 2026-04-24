@@ -7,6 +7,7 @@ const upload = require("../middleware/upload");
 const imageController = require("../controllers/imageController");
 
 router.post("/upload", upload.single("image"), imageController.uploadImage);
+router.get("/search", imageController.searchImages);
 router.get("/:userId", imageController.getUserImages);
 router.delete("/:id", imageController.deleteImage);
 

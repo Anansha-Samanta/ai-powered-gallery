@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchMyImages, createAlbum } from "../api/albumApi";
 
 import searchgrid1 from "../assets/searchgrid1.jfif";
 import searchgrid2 from "../assets/searchgrid2.jfif";
@@ -72,6 +73,8 @@ export default function AlbumMake() {
   const [photos, setPhotos] = useState([]);
   const [showGallery, setShowGallery] = useState(false);
   const [dropHov, setDropHov] = useState(false);
+  const [gallery, setGallery] = useState([]);
+  const [saving, setSaving] = useState(false);
 
 const GALLERY = [
   { id: 1, src: searchgrid1 },
@@ -85,6 +88,33 @@ const GALLERY = [
 ];
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+
+  useEffect(() => {
+  if (!showGallery) return;
+  fetchMyImages()
+    .then(imgs => setGallery(
+      imgs.map(img => ({ id: img._id, src: img.imageUrl }))
+    ))
+    .catch(console.error);
+}, [showGallery]);
+
+const handleSave = async () => {
+  if (!title.trim() && photos.length === 0) return;
+  setSaving(true);
+  try {
+    const album = await createAlbum({
+      title,
+      imageIds: photos.map(p => p.id)
+    });
+    console.log("Created album:", album); // 🔥 add this
+    navigate("/create");  // go back to create page where albums list is
+  } catch (err) {
+    console.error("Save failed:", err);   // 🔥 check this in console
+    alert("Failed to save album: " + err.message);
+  } finally {
+    setSaving(false);
+  }
+};
 
   const handlePickPhoto = (photo) => {
     if (!photos.find(p => p.id === photo.id)) {
@@ -249,6 +279,7 @@ const GALLERY = [
             }}
             onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.9)"}
             onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.55)"}
+            onClick={handleSave}
           >
             <SaveIcon />
             <span style={{ fontSize: 10, letterSpacing: "0.12em", fontFamily: "'Exo 2', sans-serif" }}>
@@ -481,33 +512,37 @@ const GALLERY = [
             <div style={{
               display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8,
             }}>
-              {GALLERY.map(photo => (
-                <div
-                  key={photo.id}
-                  onClick={() => handlePickPhoto(photo)}
-                  style={{
-                    aspectRatio: "1/1", borderRadius: 10,
-                    backgroundImage: `url(${photo.src})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center", cursor: "pointer",
-                    transition: "transform 0.18s, box-shadow 0.18s",
-                    border: photos.find(p => p.id === photo.id)
-                      ? "2px solid rgba(100,180,255,0.6)"
-                      : "1px solid rgba(255,255,255,0.08)",
-                    opacity: photos.find(p => p.id === photo.id) ? 0.5 : 1,
-                  }}
-                  onMouseEnter={e => {
-                    if (!photos.find(p => p.id === photo.id)) {
-                      e.currentTarget.style.transform = "scale(1.07)";
-                      e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.5)";
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                />
-              ))}
+<div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+  {gallery.length === 0 ? (
+    <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, gridColumn: "span 4" }}>
+      loading...
+    </span>
+  ) : (
+    gallery.map(photo => (
+      <div
+        key={photo.id}
+        onClick={() => handlePickPhoto(photo)}
+        style={{
+          aspectRatio: "1/1", borderRadius: 10,
+          backgroundImage: `url(${photo.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center", cursor: "pointer",
+          transition: "transform 0.18s, box-shadow 0.18s",
+          border: photos.find(p => p.id === photo.id)
+            ? "2px solid rgba(100,180,255,0.6)"
+            : "1px solid rgba(255,255,255,0.08)",
+          opacity: photos.find(p => p.id === photo.id) ? 0.5 : 1,
+        }}
+        onMouseEnter={e => {
+          if (!photos.find(p => p.id === photo.id)) {
+            e.currentTarget.style.transform = "scale(1.07)";
+          }
+        }}
+        onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
+      />
+    ))
+  )}
+</div>
             </div>
             <button
               onClick={() => setShowGallery(false)}

@@ -3,29 +3,21 @@ const mongoose = require("mongoose");
 const albumSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
-
-  name: {
-    type: String,
+    ref: "User",
     required: true
   },
-
-  description: {
+  title: {
     type: String,
-    default: ""
+    default: "Untitled Album"
   },
-
-  imageIds: [{
+  images: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Image"
   }],
-
   coverImage: {
     type: String,
     default: ""
   }
-
 }, { timestamps: true });
 
 module.exports = mongoose.model("Album", albumSchema);
