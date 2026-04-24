@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../styles/ViewMembers.css';
+
 
 const BASE_URL = "http://localhost:5000";
 
@@ -134,11 +136,7 @@ export default function ViewMembers() {
 // REPLACE the entire return block's outer div and grid div:
 
 return (
-  <div style={{
-    minHeight: "100vh",
-    background: "#f5f7fa",
-    fontFamily: "'Segoe UI', sans-serif",
-  }}>
+<div className="view-members-container">
     {/* Header */}
     <div style={{
       background: "#fff",
@@ -177,7 +175,7 @@ return (
     </div>
 
     {/* Content */}
-    <div style={{ padding: "0 32px 60px" }}>   {/* ← reduced side padding */}
+    <div style={{ padding: "0 32px 60px", maxWidth: 1200, margin: "0 auto" }}>   {/* ← reduced side padding */}
       {loading ? (
         <div style={{
           display: "flex", justifyContent: "center",
@@ -202,7 +200,9 @@ return (
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",  // ← fixed 3 columns always
-          gap: 22,
+          gap: 22,    
+  maxWidth: 1100,       // ← add this
+  margin: "0 auto",
         }}>
           {members.map(member => (
             <MemberCard

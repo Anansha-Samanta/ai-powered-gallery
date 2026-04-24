@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../styles/MemberDetails.css';
+
 
 const BASE_URL = "http://localhost:5000";
 
@@ -65,15 +67,7 @@ export default function MemberDetails() {
     .split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#f5f7fa",
-      fontFamily: "'Segoe UI', sans-serif",
-      display: "flex",
-      alignItems: "flex-start",
-      justifyContent: "center",
-      padding: "40px 16px 60px",
-    }}>
+    <div className="member-details-container">
       <div style={{
         background: "#fff",
         borderRadius: 14,

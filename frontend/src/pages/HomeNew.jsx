@@ -16,8 +16,8 @@ const HomeNew = () => {
       </button>
 
       <div className="homenew-content">
-        <h1 className="team-title">TEAM BLUE</h1>
-        <p className="welcome-text">Welcome to the BLUE Team Management</p>
+        <h1 className="team-title">TEAM 12</h1>
+        <p className="welcome-text">Welcome to Team 12 Management</p>
         
         <div className="manage-team-card">
           <h2 className="card-title">Manage Team</h2>
