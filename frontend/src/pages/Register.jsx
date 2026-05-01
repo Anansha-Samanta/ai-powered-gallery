@@ -221,26 +221,29 @@ const handleSubmit = async () => {
   setSubmitting(true);
 
   try {
-const res = await fetch("http://localhost:5000/api/auth/register", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    username,
-    email: username,  // TEMP (since no email field in UI)
-    password
-  }),
-});
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        email: username,  // Using username as email for now
+        password
+      }),
+    });
 
     const data = await res.json();
 
     if (!res.ok) {
-      setErrors({ username: data.detail || "Something went wrong" });
+      setErrors({ username: data || "Something went wrong" });
       setSubmitting(false);
       return;
     }
 
+    // ✅ Show success message about email verification
+    alert(data.message || "Registration successful! Check your email to verify your account.");
+    
     setDone(true);
-    setTimeout(() => navigate("/login"), 1200);
+    setTimeout(() => navigate("/login"), 2000);
 
   } catch (err) {
     console.error(err);
