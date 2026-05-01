@@ -20,6 +20,20 @@ const userSchema = new mongoose.Schema({
   profilePic: {
     type: String,
     default: ""
+  },
+
+  // ADD THESE 3 FIELDS:
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verificationToken: {
+    type: String,
+    default: null
+  },
+  verificationExpires: {
+    type: Date,
+    default: null
   }
 
 }, { timestamps: true });

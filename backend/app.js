@@ -43,4 +43,7 @@ const startServer = async () => {
   }
 };
 
+console.log("EMAIL USER:", process.env.EMAIL_USER);
+console.log("EMAIL PASS:", process.env.EMAIL_PASS);
+
 startServer();

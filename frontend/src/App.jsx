@@ -19,6 +19,7 @@ import HomeNew from "./pages/HomeNew";
 import AddMember from "./pages/AddMember";
 import ViewMembers from "./pages/ViewMembers";
 import MemberDetails from "./pages/MemberDetails";
+import VerifyEmail from "./pages/VerifyEmail";
 
 
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/add-member" element={<AddMember />} />
         <Route path="/view-members" element={<ViewMembers />} />
         <Route path="/member/:id" element={<MemberDetails />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
         
       </Routes>
     </BrowserRouter>
