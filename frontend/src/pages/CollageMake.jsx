@@ -1,11 +1,7 @@
   import { useState, useRef, useEffect } from "react";
   import { useNavigate } from "react-router-dom";
-  import flower1 from "../assets/flower1.jfif";
-  import flower2 from "../assets/flower2.jfif";
-  import flower3 from "../assets/flower3.jfif";
-  import flower4 from "../assets/flower4.jfif";
-  import flower5 from "../assets/flower5.jfif";
-  import flower6 from "../assets/flower6.jfif";
+  import { createCollage } from "../api/collageApi";
+  import { fetchMyImages } from "../api/albumApi";
 
 
   const StarField = ({ count = 140 }) => {
@@ -133,21 +129,22 @@
     const [title, setTitle] = useState("");
     const [titleFocused, setTitleFocused] = useState(false);
     const [slots, setSlots] = useState([null, null, null, null]);
+    const [gallery, setGallery] = useState([]);
 
     // Sample gallery photos to "pick from"
-    const GALLERY = [
-      { id: 1, src: flower1 },
-      { id: 2, src: flower2 },
-      { id: 3, src: flower3 },
-      { id: 4, src: flower4 },
-      { id: 5, src: flower5 },
-      { id: 6, src: flower6 },
-    ];
 
     const [showGallery, setShowGallery] = useState(false);
     const [activeSlot, setActiveSlot] = useState(null);
 
     useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+
+useEffect(() => {
+  fetchMyImages()
+    .then(imgs => setGallery(
+      imgs.map(img => ({ id: img._id, src: img.imageUrl }))
+    ))
+    .catch(console.error);
+}, []);
 
     const handleAddToSlot = (slotIndex) => {
       setActiveSlot(slotIndex);
@@ -155,24 +152,18 @@
     };
 
 
- const saveCollage = async () => {
+const saveCollage = async () => {
   const photos = slots.filter(Boolean).map(p => p.src);
   if (photos.length === 0) return alert("Add at least one photo");
-
   try {
-    const res = await fetch("http://localhost:8000/collages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: "hansa@gmail.com", title, photos }),
+    const data = await createCollage({
+      userId: localStorage.getItem("userId"),  // same as albumApi uses
+      title,
+      photos,
     });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || "Failed to save collage");
-
-    alert(data.message + " (id: " + data.id + ")");
+    alert(`Saved! (id: ${data.id})`);
   } catch (err) {
-    console.error(err);
-    alert("Failed to save collage");
+    alert(err.message);
   }
 };
 
@@ -501,7 +492,7 @@
               <div style={{
                 display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8,
               }}>
-                {GALLERY.map(photo => (
+                {gallery.map(photo => (
                   <div
                     key={photo.id}
                     onClick={() => handlePickPhoto(photo)}

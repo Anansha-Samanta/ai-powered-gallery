@@ -250,6 +250,69 @@ export default function PhotoEdit() {
     setActiveFilter("none");
   };
 
+  // Add this ref at the top of the component
+const imgRef = useRef(null);
+
+// Add this function inside the component
+const [saving, setSaving] = useState(false);
+
+const handleSave = async () => {
+  if (saving) return;
+  setSaving(true);
+
+  try {
+    const photoId = photo._id || photo.id;
+    if (!photoId) { alert("No photo ID found"); setSaving(false); return; }
+
+    const proxyRes = await fetch(
+      `http://localhost:5000/api/images/proxy?url=${encodeURIComponent(photo.src)}`
+    );
+    if (!proxyRes.ok) throw new Error("Proxy fetch failed");
+
+    const blob = await proxyRes.blob();
+    const imageBitmap = await createImageBitmap(blob);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = imageBitmap.width;
+    canvas.height = imageBitmap.height;
+    const ctx = canvas.getContext("2d");
+    ctx.filter = cssFilter || "none";
+    ctx.drawImage(imageBitmap, 0, 0);
+
+    const editedBlob = await new Promise(resolve =>
+      canvas.toBlob(resolve, "image/jpeg", 0.75) // ← lower quality = smaller file = faster upload
+    );
+
+    console.log("Blob size:", editedBlob.size, "bytes");
+
+    const formData = new FormData();
+    formData.append("image", editedBlob, "edited.jpg");
+
+    const res = await fetch(`http://localhost:5000/api/images/${photoId}`, {
+      method: "PUT",
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error("Save failed");
+    const updated = await res.json();
+
+    navigate("/photo", {
+      state: {
+        photo: { ...photo, src: updated.imageUrl, imageUrl: updated.imageUrl },
+        photos: location.state?.photos,
+        index: location.state?.index,
+      },
+      replace: true,
+    });
+
+  } catch (err) {
+    console.error("Save error:", err);
+    alert("Failed to save, please try again");
+  } finally {
+    setSaving(false);
+  }
+};
+
   return (
     <div style={{
       width: "100vw", height: "100vh",
@@ -280,6 +343,7 @@ export default function PhotoEdit() {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
         input[type=range] { -webkit-appearance: none; appearance: none; }
+        
       `}</style>
 
       <StarField count={100} />
@@ -351,7 +415,7 @@ export default function PhotoEdit() {
                 border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: 20, padding: "6px 12px",
                 color: "rgba(255,255,255,0.4)", cursor: "pointer",
-                fontSize: 10, letterSpacing: "0.1em",
+                fontSize: 10  , letterSpacing: "0.1em",
                 fontFamily: "'Exo 2', sans-serif",
                 transition: "all 0.2s",
                 display: "flex", alignItems: "center", gap: 5,
@@ -368,30 +432,37 @@ export default function PhotoEdit() {
               <ResetIcon /> reset
             </button>
           )}
-          <button
-            onClick={() => navigate(-1, { state: returnState })}
-            style={{
-              display: "flex", alignItems: "center", gap: 7,
-              background: hasChanges ? "rgba(80,120,220,0.25)" : "rgba(255,255,255,0.06)",
-              border: `1px solid ${hasChanges ? "rgba(140,180,255,0.4)" : "rgba(255,255,255,0.1)"}`,
-              borderRadius: 20, padding: "6px 16px",
-              color: hasChanges ? "rgba(160,200,255,0.95)" : "rgba(255,255,255,0.45)",
-              cursor: "pointer",
-              fontSize: 11, letterSpacing: "0.1em",
-              fontFamily: "'Exo 2', sans-serif",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = "rgba(80,120,220,0.4)";
-              e.currentTarget.style.color = "rgba(200,225,255,1)";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = hasChanges ? "rgba(80,120,220,0.25)" : "rgba(255,255,255,0.06)";
-              e.currentTarget.style.color = hasChanges ? "rgba(160,200,255,0.95)" : "rgba(255,255,255,0.45)";
-            }}
-          >
-            <SaveIcon /> save
-          </button>
+<button
+  onClick={handleSave}
+  disabled={saving}
+  style={{
+    display: "flex", alignItems: "center", gap: 7,
+    background: saving ? "rgba(80,120,220,0.5)" : hasChanges ? "rgba(80,120,220,0.25)" : "rgba(255,255,255,0.06)",
+    border: `1px solid ${hasChanges ? "rgba(140,180,255,0.4)" : "rgba(255,255,255,0.1)"}`,
+    borderRadius: 20, padding: "6px 16px",
+    color: hasChanges ? "rgba(160,200,255,0.95)" : "rgba(255,255,255,0.45)",
+    cursor: saving ? "not-allowed" : "pointer",
+    fontSize: 11, letterSpacing: "0.1em",
+    fontFamily: "'Exo 2', sans-serif",
+    transition: "all 0.2s",
+    opacity: saving ? 0.8 : 1,
+  }}
+>
+  {saving ? (
+    <>
+      <div style={{
+        width: 14, height: 14, borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.3)",
+        borderTop: "2px solid white",
+        animation: "spin 0.8s linear infinite",
+        flexShrink: 0,
+      }} />
+      saving...
+    </>
+  ) : (
+    <><SaveIcon /> save</>
+  )}
+</button>
         </div>
       </div>
 
@@ -451,6 +522,7 @@ export default function PhotoEdit() {
 }}>
   {photo.src ? (
     <img
+      ref={imgRef}
       src={photo.src}
       alt={photo.label}
       style={{

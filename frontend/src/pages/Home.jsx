@@ -253,10 +253,6 @@ const buildGroups = (images) => {
   }));
 };
 
-
-
-
-
   const navItems = [
     { id: "planet", icon: <PlanetIcon />, special: true },
     { id: "home",   icon: <HomeIcon /> },
@@ -266,30 +262,81 @@ const buildGroups = (images) => {
     { id: "user",   icon: <UserIcon />, special: true },
   ];
 
-
-
-
-
-const handleUpload = async (file) => {
-  const formData = new FormData();
-  formData.append("image", file);
-  formData.append("userId", localStorage.getItem("userId"));
-  formData.append("title", "demo");
-
-  const res = await fetch("http://localhost:5000/api/images/upload", {
-    method: "POST",
-    body: formData,
+const compressFile = (file) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const maxW = 1200;
+      const scale = Math.min(1, maxW / img.width);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.floor(img.width * scale);
+      canvas.height = Math.floor(img.height * scale);
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(resolve, "image/jpeg", 0.8);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
   });
-
-  const data = await res.json();
-
-  // 🔥 Add this
-  setImages((prev) => [data, ...prev]);
 };
 
+const handleUpload = async (file) => {
+  // show placeholder immediately
+  const placeholderId = "uploading-" + Date.now();
+  setImages(prev => [{
+    _id: placeholderId,
+    imageUrl: URL.createObjectURL(file),
+    isUploading: true,
+    createdAt: new Date().toISOString(),
+  }, ...prev]);
 
+  try {
+    // 1. compress
+    const compressed = await compressFile(file);
+    console.log("Original:", file.size, "Compressed:", compressed.size);
 
+    // 2. upload directly to Cloudinary from browser
+    const formData = new FormData();
+    formData.append("file", compressed);
+    formData.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+    formData.append("folder", "gallery-app");
 
+    const cloudRes = await fetch(
+      `https://api-ap.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`,
+      { method: "POST", body: formData }
+    );
+
+    if (!cloudRes.ok) throw new Error("Cloudinary upload failed");
+    const cloudData = await cloudRes.json();
+    console.log("☁️ Cloudinary done:", cloudData.secure_url);
+
+    // 3. save metadata to your backend
+    const metaRes = await fetch("http://localhost:5000/api/images/save-meta", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+        imageUrl: cloudData.secure_url,
+        publicId: cloudData.public_id,
+        title: file.name.split(".")[0],
+      }),
+    });
+
+    if (!metaRes.ok) throw new Error("Meta save failed");
+    const data = await metaRes.json();
+
+    // 4. replace placeholder with real image
+    setImages(prev => prev.map(img =>
+      img._id === placeholderId ? { ...data, imageUrl: data.imageUrl } : img
+    ));
+
+  } catch (err) {
+    console.error("Upload error:", err);
+    setImages(prev => prev.filter(img => img._id !== placeholderId));
+    alert("Upload failed, please try again");
+  }
+};
 
   return (
     <div style={{
@@ -498,30 +545,32 @@ const photosWithUpload =
         >
           {photosWithUpload.map((photo, pi) => {
             // 🔥 Upload tile
-            if (photo.id === "upload") {
-              return (
-                <div
-                  key="upload"
-                  onClick={() =>
-                    document.getElementById("uploadInput").click()
-                  }
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: 8,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "rgba(255,255,255,0.08)",
-                    color: "white",
-                    fontSize: 24,
-                    cursor: "pointer",
-                  }}
-                >
-                  +
-                </div>
-              );
-            }
+if (photo.isUploading) {
+  return (
+    <div key={photo._id} style={{
+      width: 70, height: 70, borderRadius: 8,
+      flexShrink: 0, position: "relative", overflow: "hidden",
+    }}>
+      <img
+        src={photo.imageUrl}
+        style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.5 }}
+      />
+      <div style={{
+        position: "absolute", inset: 0,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: "rgba(0,0,0,0.4)",
+      }}>
+        <div style={{
+          width: 20, height: 20, borderRadius: "50%",
+          border: "2px solid rgba(255,255,255,0.3)",
+          borderTop: "2px solid white",
+          animation: "spin 0.8s linear infinite",
+        }} />
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
 
             // layout logic
             if (gi === 0 && pi === 1) {

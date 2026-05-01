@@ -1,23 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import flower1 from "../assets/flower1.jfif";
-import flower2 from "../assets/flower2.jfif";
-import flower3 from "../assets/flower3.jfif";
-import flower4 from "../assets/flower4.jfif";
-import flower5 from "../assets/flower5.jfif";
-import flower6 from "../assets/flower6.jfif";
-import searchgrid1 from "../assets/searchgrid1.jfif";
-import searchgrid2 from "../assets/searchgrid2.jfif";
-import searchgrid3 from "../assets/searchgrid3.jfif";
-import searchgrid4 from "../assets/searchgrid4.jfif";
-import searchgrid5 from "../assets/searchgrid5.jfif";
-import searchgrid6 from "../assets/searchgrid6.jfif";
-import searchgrid7 from "../assets/searchgrid7.jfif";
-import searchgrid8 from "../assets/searchgrid8.jfif";
-import searchgrid9 from "../assets/searchgrid9.jfif";
-import home1 from "../assets/home1.jfif";
-import home2 from "../assets/home2.jfif";
-
 
 const StarField = ({ count = 150 }) => {
   const stars = useRef(
@@ -47,7 +29,6 @@ const StarField = ({ count = 150 }) => {
   );
 };
 
-// ── Nav Icons (UPDATED ONLY HERE) ───────────────────────────────────────────
 const PlanetIcon = () => (
   <svg className="planet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="6"/>
@@ -60,7 +41,6 @@ const HomeIcon = () => (
     <path d="M9 21V12h6v9"/>
   </svg>
 );
-
 const GridIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="3" y="3" width="7" height="7" rx="1"/>
@@ -69,29 +49,24 @@ const GridIcon = () => (
     <rect x="14" y="14" width="7" height="7" rx="1"/>
   </svg>
 );
-
 const EditIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
   </svg>
 );
-
 const SearchIconSVG = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="11" cy="11" r="7"/>
     <path d="M21 21l-4.35-4.35"/>
   </svg>
 );
-
 const UserIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="8" r="4"/>
     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
   </svg>
 );
-
-// ❌ DO NOT CHANGE
 const XIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
     <line x1="18" y1="6" x2="6" y2="18"/>
@@ -99,34 +74,13 @@ const XIcon = () => (
   </svg>
 );
 
-const FLOWER_PHOTOS = [
-  { id: 1, src: flower6, size: "wide" },
-  { id: 2,  src: flower1, size: "sm" },
-  { id: 3,  src: flower2, size: "sm" },
-  { id: 4,  src: flower3, size: "sm" },
-  { id: 5,  src: flower4, size: "sm" },
-  { id: 6,  src: flower5, size: "sm" },
-];
+const SUGGESTIONS = ["flowers", "sunset", "forest", "ocean", "people", "food"];
 
-const GRID_PHOTOS = [
-  { id: 1, src: searchgrid1 },
-  { id: 2, src: searchgrid2 },
-  { id: 3, src: searchgrid3 },
-  { id: 4, src: searchgrid4 },
-  { id: 5, src: searchgrid5 },
-  { id: 6, src: searchgrid6 },
-  { id: 7, src: searchgrid7 },
-  { id: 8, src: searchgrid8 },
-  { id: 9, src: searchgrid9 },
-];
-
-const SUGGESTIONS = ["flowers", "sunset", "forest", "ocean"];
-
-const PhotoTile = ({ photo, onClick }) => {
-  const isWide = photo.size === "wide";
+const PhotoTile = ({ photo, index, results, onClick }) => {
+  const isWide = index === 0;
   return (
     <div
-      onClick={() => onClick && onClick(photo)}
+      onClick={() => onClick(photo, index)}
       style={{
         width: isWide ? 160 : 90,
         height: 110,
@@ -147,16 +101,11 @@ const PhotoTile = ({ photo, onClick }) => {
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-            <img
+      <img
         src={photo.src}
-        alt="flower"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
+        alt={photo.label || "photo"}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
       />
-
       <div style={{
         position: "absolute", inset: 0,
         background: "linear-gradient(160deg, rgba(255,255,255,0.1) 0%, transparent 60%)",
@@ -165,8 +114,7 @@ const PhotoTile = ({ photo, onClick }) => {
   );
 };
 
-
-const EmptyState = () => (
+const EmptyState = ({ query }) => (
   <div style={{
     display: "flex", flexDirection: "column", alignItems: "center",
     justifyContent: "center", flex: 1, gap: 14,
@@ -179,60 +127,66 @@ const EmptyState = () => (
     <p style={{
       fontSize: 13, fontFamily: "'Exo 2', sans-serif",
       letterSpacing: "0.05em", margin: 0,
-    }}>Search for photos in your gallery</p>
+    }}>
+      {query ? `No results for "${query}"` : "Search for photos in your gallery"}
+    </p>
   </div>
 );
 
-
 export default function SearchPage() {
   const [activeNav, setActiveNav] = useState("search");
-  const [query, setQuery] = useState("flower");
-  const [results, setResults] = useState(FLOWER_PHOTOS);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
+  const handleSearch = async (q) => {
+    const trimmed = (q ?? query).trim();
+    setQuery(trimmed);
+    if (!trimmed) { setResults([]); return; }
 
-const handleSearch = async (q) => {
-  const trimmed = (q ?? query).trim();
-  setQuery(trimmed);
-  if (!trimmed) { setResults([]); return; }
+    setLoading(true);
+    try {
+      const userId = localStorage.getItem("userId");
+      const res = await fetch(
+        `http://localhost:5000/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
+      );
+      const data = await res.json();
 
-  setLoading(true);
-  try {
-    const userId = localStorage.getItem("userId");
-    const res = await fetch(
-      `http://localhost:5000/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
-    );
-    const data = await res.json();
+      const mapped = data.map((img) => ({
+        id: img._id,
+        _id: img._id,
+        src: img.imageUrl,
+        label: img.title || img.aiCaption || "photo",
+        tags: img.tags || [],
+      }));
 
-    // Map backend images to the shape PhotoTile expects
-    const mapped = data.map((img, i) => ({
-      id: img._id,
-      src: img.imageUrl,
-      size: i === 0 ? "wide" : "sm",
-      label: img.title || img.aiCaption || "photo",
-    }));
+      setResults(mapped);
+    } catch (err) {
+      console.error("Search failed:", err);
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    setResults(mapped);
-  } catch (err) {
-    console.error("Search failed:", err);
-    setResults([]);
-  } finally {
-    setLoading(false);
-  }
-};
+  const handlePhotoClick = (photo, index) => {
+    navigate("/photo", {
+      state: {
+        photo,
+        photos: results,
+        index,
+      },
+    });
+  };
 
   const handleClear = () => { setQuery(""); setResults([]); inputRef.current?.focus(); };
-
-  const handleSuggestion = (s) => {
-    setQuery(s);
-    handleSearch(s);
-  };
+  const handleSuggestion = (s) => { setQuery(s); handleSearch(s); };
 
   return (
     <div style={{
@@ -252,9 +206,8 @@ const handleSearch = async (q) => {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes slideIn {
-          from { opacity: 0; transform: translateX(-12px); }
-          to   { opacity: 1; transform: translateX(0); }
+        @keyframes shimmer {
+          0% { opacity: 0.4; } 50% { opacity: 0.9; } 100% { opacity: 0.4; }
         }
         ::-webkit-scrollbar { height: 3px; width: 3px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
@@ -266,14 +219,8 @@ const handleSearch = async (q) => {
           color: rgba(255,255,255,0.45);
           transition: background 0.2s, color 0.2s;
         }
-          .nav-btn svg {
-  width: 32px;
-  height: 32px;
-}
-  .planet-icon {
-  width: 36px;
-  height: 36px;
-}
+        .nav-btn svg { width: 32px; height: 32px; }
+        .planet-icon { width: 36px; height: 36px; }
         .nav-btn:hover  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
         .nav-btn.active { background: rgba(255,255,255,0.13); color: white; }
         .nav-btn.special {
@@ -297,27 +244,13 @@ const handleSearch = async (q) => {
           cursor: pointer; white-space: nowrap; flex-shrink: 0;
           transition: background 0.2s, color 0.2s, border-color 0.2s;
         }
-        .chip:hover {
-          background: rgba(255,255,255,0.14);
-          color: rgba(255,255,255,0.9);
-          border-color: rgba(255,255,255,0.25);
-        }
-        .chip.active {
-          background: rgba(80,130,220,0.2);
-          border-color: rgba(80,130,220,0.4);
-          color: white;
-        }
+        .chip:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.25); }
+        .chip.active { background: rgba(80,130,220,0.2); border-color: rgba(80,130,220,0.4); color: white; }
       `}</style>
 
       <StarField count={160} />
 
-      <div style={{
-        position: "absolute", top: "30%", left: "20%",
-        width: "60%", height: "50%",
-        background: "radial-gradient(ellipse, rgba(30,60,140,0.08) 0%, transparent 70%)",
-        pointerEvents: "none",
-      }} />
-
+      {/* NAV */}
       <div style={{
         position: "relative", zIndex: 20,
         display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -333,14 +266,14 @@ const handleSearch = async (q) => {
         </button>
         <div style={{ display: "flex", gap: 4 }}>
           {[
-{ id: "home",   icon: <HomeIcon />,   path: "/home" },
-        { id: "grid",   icon: <GridIcon />,   path: "/ai" },
-        { id: "edit",   icon: <EditIcon />,   path: "/create" },
-        { id: "search", icon: <SearchIconSVG />, path: "/search" },
+            { id: "home",   icon: <HomeIcon />,      path: "/home" },
+            { id: "grid",   icon: <GridIcon />,      path: "/ai" },
+            { id: "edit",   icon: <EditIcon />,      path: "/create" },
+            { id: "search", icon: <SearchIconSVG />, path: "/search" },
           ].map(n => (
             <button key={n.id}
               className={`nav-btn${activeNav === n.id ? " active" : ""}`}
-              onClick={() => {setActiveNav(n.id); navigate(n.path);}}
+              onClick={() => { setActiveNav(n.id); navigate(n.path); }}
             >{n.icon}</button>
           ))}
         </div>
@@ -349,21 +282,19 @@ const handleSearch = async (q) => {
         </button>
       </div>
 
-      {/* ── SEARCH SECTION ── */}
+      {/* SEARCH BAR */}
       <div style={{
         position: "relative", zIndex: 10,
         padding: "18px 20px 0",
         opacity: loaded ? 1 : 0,
         animation: loaded ? "fadeUp 0.5s 0.1s both ease" : "none",
       }}>
-        {/* Search bar */}
         <div style={{
           display: "flex", alignItems: "center", gap: 10,
           background: "rgba(255,255,255,0.08)",
           border: `1px solid ${focused ? "rgba(100,160,255,0.45)" : "rgba(255,255,255,0.14)"}`,
-          borderRadius: 30,
-          padding: "10px 14px",
-          transition: "border-color 0.25s, background 0.25s",
+          borderRadius: 30, padding: "10px 14px",
+          transition: "border-color 0.25s",
           backdropFilter: "blur(10px)",
         }}>
           <span style={{ color: "rgba(255,255,255,0.4)", display: "flex", flexShrink: 0 }}>
@@ -372,7 +303,7 @@ const handleSearch = async (q) => {
           <input
             ref={inputRef}
             className="search-input"
-            placeholder="Search photos…"
+            placeholder="Search by tag, caption, or title…"
             value={query}
             onChange={e => setQuery(e.target.value)}
             onFocus={() => setFocused(true)}
@@ -380,29 +311,21 @@ const handleSearch = async (q) => {
             onKeyDown={e => e.key === "Enter" && handleSearch()}
           />
           {query && (
-            <button
-              onClick={handleClear}
-              style={{
-                background: "rgba(255,255,255,0.12)",
-                border: "none", borderRadius: "50%",
-                width: 22, height: 22,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                cursor: "pointer", color: "rgba(255,255,255,0.6)",
-                flexShrink: 0, transition: "background 0.2s",
-              }}
-            ><XIcon /></button>
+            <button onClick={handleClear} style={{
+              background: "rgba(255,255,255,0.12)", border: "none", borderRadius: "50%",
+              width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", color: "rgba(255,255,255,0.6)", flexShrink: 0,
+            }}><XIcon /></button>
           )}
         </div>
 
         {/* Suggestion chips */}
         <div style={{
           display: "flex", gap: 8, overflowX: "auto",
-          padding: "12px 0 4px",
-          scrollbarWidth: "none",
+          padding: "12px 0 4px", scrollbarWidth: "none",
         }}>
           {SUGGESTIONS.map(s => (
-            <button
-              key={s}
+            <button key={s}
               className={`chip${query.toLowerCase() === s ? " active" : ""}`}
               onClick={() => handleSuggestion(s)}
             >{s}</button>
@@ -410,65 +333,59 @@ const handleSearch = async (q) => {
         </div>
       </div>
 
-      {/* ── RESULTS ── */}
+{/* RESULTS */}
 <div style={{
-  flex: 1,
-  position: "relative",
-  zIndex: 10,
-  display: "flex",
-  flexDirection: "column",
+  flex: 1, position: "relative", zIndex: 10,
+  display: "flex", flexDirection: "column",
   padding: "16px 20px 0",
 }}>
-  {results.length > 0 ? (
+  {loading ? (
+    <div style={{
+      display: "flex", alignItems: "center", justifyContent: "center",
+      flex: 1, color: "rgba(255,255,255,0.3)",
+      fontSize: 13, fontFamily: "'Exo 2', sans-serif",
+      animation: "shimmer 1.5s ease-in-out infinite",
+    }}>
+      searching...
+    </div>
+  ) : results.length > 0 ? (
     <>
-      {/* FIXED (non-scroll) content */}
-      <div>
-        <div style={{
-          fontSize: 11,
-          color: "rgba(255,255,255,0.3)",
-          letterSpacing: "0.08em",
-          marginBottom: 14,
-        }}>
-          {results.length} results for{" "}
-          <span style={{ color: "rgba(255,255,255,0.6)" }}>
-            "{query}"
-          </span>
-        </div>
-
-        <div style={{
-          display: "flex",
-          gap: 10,
-          overflowX: "auto",
-          paddingBottom: 8,
-        }}>
-          {results.map((photo) => (
-            <PhotoTile key={photo.id} photo={photo} />
-          ))}
-        </div>
+      <div style={{
+        fontSize: 11, color: "rgba(255,255,255,0.3)",
+        letterSpacing: "0.08em", marginBottom: 14,
+      }}>
+        {results.length} result{results.length !== 1 ? "s" : ""} for{" "}
+        <span style={{ color: "rgba(255,255,255,0.6)" }}>"{query}"</span>
       </div>
 
       <div style={{
-        marginTop: 20,
-        overflowY: "scroll",
-        paddingBottom: 20,
-        minHeight: 0,
-        flex: 1,
+        overflowY: "scroll", paddingBottom: 20,
+        minHeight: 0, flex: 1,
       }}>
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: 8,
+          gap: 10,
         }}>
-          {GRID_PHOTOS.map((photo) => (
+          {results.map((photo, i) => (
             <div
               key={photo.id}
+              onClick={() => handlePhotoClick(photo, i)}
               style={{
-                aspectRatio: "0.5/0.5",
-                borderRadius: 8,
+                aspectRatio: "1/1", borderRadius: 10,
                 backgroundImage: `url(${photo.src})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
+                backgroundSize: "cover", backgroundPosition: "center",
                 border: "1px solid rgba(255,255,255,0.07)",
+                cursor: "pointer",
+                transition: "transform 0.2s, box-shadow 0.2s",
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = "scale(1.03)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.5)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             />
           ))}
@@ -476,7 +393,7 @@ const handleSearch = async (q) => {
       </div>
     </>
   ) : (
-    <EmptyState />
+    <EmptyState query={query} />
   )}
 </div>
     </div>

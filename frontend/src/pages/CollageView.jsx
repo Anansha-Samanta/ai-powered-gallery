@@ -4,7 +4,7 @@ import food1 from "../assets/food1.jfif";
 import food2 from "../assets/food2.jfif";
 import food3 from "../assets/food3.jfif";
 import food4 from "../assets/food4.jfif";
-
+import { deleteCollage } from "../api/collageApi";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
@@ -343,7 +343,16 @@ export default function CollageView() {
           />
           <SideBtn icon={<DownloadIcon />} label="save"   delay={0.28} />
           <div style={{ flex: 1 }} />
-          <SideBtn icon={<TrashIcon />}   label="trash"   delay={0.34} danger />
+          <SideBtn icon={<TrashIcon />}   label="trash" onClick={async () => {
+  if (!collage._id) return;
+  if (!window.confirm("Delete this collage?")) return;
+  try {
+    await deleteCollage(collage._id);
+    navigate("/create");
+  } catch (err) {
+    alert(err.message);
+  }
+}} delay={0.34} danger />
         </div>
 
         {/* ── COLLAGE DISPLAY ── */}

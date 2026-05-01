@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import decor1 from "../assets/decor1.jfif";
 import place1 from "../assets/place1.jfif";
 import { fetchAlbums } from "../api/albumApi";
+import { getUserCollages } from "../api/collageApi";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
@@ -235,6 +236,7 @@ export default function Create() {
   const [activeNav, setActiveNav] = useState("edit");
   const [loaded, setLoaded] = useState(false);
   const [albums, setAlbums] = useState([]);
+  const [collages, setCollages] = useState([]);
 
   const navigate = useNavigate();
 
@@ -244,6 +246,15 @@ export default function Create() {
   fetchAlbums()
     .then(data => setAlbums(data))
     .catch(console.error);
+}, []);
+
+useEffect(() => {
+  const userId = localStorage.getItem("userId");
+  if (userId) {
+    getUserCollages(userId)
+      .then(setCollages)
+      .catch(console.error);
+  }
 }, []);
 
   return (
@@ -383,9 +394,26 @@ export default function Create() {
           <div>
             <SectionLabel text="collages :" delay={0.35} />
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {COLLAGES.map((item, i) => (
-                <PhotoCard key={item.id} item={item} index={i + 3} onClick={() => navigate("/viewcollage", { state: item })} />
-              ))}
+{collages.map((item, i) => (
+  <PhotoCard
+    key={item._id}
+    item={{
+      src: item.photos[0] || place1, // use first photo as cover
+      label: item.title,
+      count: item.photos.length,
+    }}
+    index={i + 3}
+    onClick={() => navigate("/viewcollage", {
+      state: {
+        collage: {
+          label: item.title,
+          slots: item.photos.map(src => ({ src })),
+          _id: item._id,
+        }
+      }
+    })}
+  />
+))}
             </div>
           </div>
         </div>

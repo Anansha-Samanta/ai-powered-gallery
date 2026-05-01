@@ -127,9 +127,9 @@ const handleDelete = async () => {
 
     const id = photo._id || photo.id;
 
-    if (!id) {
-      console.error("No ID found:", photo);
-      alert("Image ID missing");
+    // ← add this guard
+    if (!id || id === "upload" || id.startsWith("uploading-")) {
+      console.error("Invalid ID, not a real image");
       return;
     }
 
@@ -139,24 +139,18 @@ const handleDelete = async () => {
 
     if (!res.ok) throw new Error("Delete failed");
 
-    // 🔥 REMOVE current image from array
     const updatedPhotos = photos.filter((p) => (p._id || p.id) !== id);
 
-    // 🔥 CASE 1: no images left
     if (updatedPhotos.length === 0) {
-      navigate("/home"); // go home
+      navigate("/home");
       return;
     }
 
-    // 🔥 CASE 2: decide next index
     let newIndex = currentIndex;
-
-    // if we deleted last image → go to previous
     if (currentIndex >= updatedPhotos.length) {
       newIndex = updatedPhotos.length - 1;
     }
 
-    // 🔥 navigate to next image
     navigate("/photo", {
       state: {
         photo: updatedPhotos[newIndex],
@@ -302,7 +296,6 @@ const handleDelete = async () => {
 <SideBtn icon={<ZoomIcon />}    label="zoom"   delay={0.22} onClick={() => setZoomed(z => !z)} />
           <div style={{ flex: 1 }} />
           <SideBtn icon={<TrashIcon />}   label="trash"  delay={0.28} danger onClick={handleDelete} />
-          <SideBtn icon={<AlbumAddIcon />} label="album" delay={0.34} />
         </div>
 
         {/* ── PHOTO AREA ── */}
