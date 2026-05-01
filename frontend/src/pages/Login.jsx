@@ -85,7 +85,7 @@ export default function Login() {
     setTimeout(() => setLoaded(true), 80);
   }, []);
 
-  const handleLogin = async () => {
+const handleLogin = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
@@ -101,6 +101,7 @@ export default function Login() {
       const data = await res.json();
 
       if (!res.ok) {
+        // ✅ Show specific error message (including verification error)
         alert(data || "Login failed");
         return;
       }
