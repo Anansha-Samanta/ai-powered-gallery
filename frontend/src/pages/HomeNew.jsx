@@ -10,7 +10,7 @@ const HomeNew = () => {
       {/* Navigation Button on Right */}
       <button 
         className="nav-button-right"
-        onClick={() => navigate('/home')}
+        onClick={() => navigate('/landing')}
       >
         Back to Main
       </button>

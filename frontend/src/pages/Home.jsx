@@ -99,7 +99,6 @@ const PlaneIcon = () => (
 
 const uploadTile = {
   id: "upload",
-  src: "https://via.placeholder.com/150?text=+",
   label: "upload",
 };
 
@@ -543,70 +542,68 @@ const photosWithUpload =
             alignItems: "flex-start",
           }}
         >
-          {photosWithUpload.map((photo, pi) => {
-            // 🔥 Upload tile
-if (photo.isUploading) {
-  return (
-    <div key={photo._id} style={{
-      width: 70, height: 70, borderRadius: 8,
-      flexShrink: 0, position: "relative", overflow: "hidden",
-    }}>
-      <img
-        src={photo.imageUrl}
-        style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.5 }}
-      />
-      <div style={{
-        position: "absolute", inset: 0,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        background: "rgba(0,0,0,0.4)",
-      }}>
-        <div style={{
-          width: 20, height: 20, borderRadius: "50%",
-          border: "2px solid rgba(255,255,255,0.3)",
-          borderTop: "2px solid white",
-          animation: "spin 0.8s linear infinite",
-        }} />
+{photosWithUpload.map((photo, pi) => {
+
+  // ✅ upload tile check FIRST
+  if (photo.id === "upload") {
+    return (
+      <div
+        key="upload"
+        onClick={() => document.getElementById("uploadInput").click()}
+        style={{
+          width: 70, height: 70, borderRadius: 8,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "rgba(255,255,255,0.08)",
+          color: "white", fontSize: 24,
+          cursor: "pointer", flexShrink: 0,
+          border: "1px dashed rgba(255,255,255,0.2)",
+          transition: "background 0.2s",
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.14)"}
+        onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+      >
+        +
       </div>
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-    </div>
-  );
-}
+    );
+  }
 
-            // layout logic
-            if (gi === 0 && pi === 1) {
-              return (
-                <Photo
-                  key={photo.id}
-                  photo={photo}
-                  size="wide"
-                  photos={group.photos}
-                  index={pi}
-                />
-              );
-            }
+  // uploading placeholder
+  if (photo.isUploading) {
+    return (
+      <div key={photo._id} style={{
+        width: 70, height: 70, borderRadius: 8,
+        flexShrink: 0, position: "relative", overflow: "hidden",
+      }}>
+        <img
+          src={photo.imageUrl}
+          style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.5 }}
+        />
+        <div style={{
+          position: "absolute", inset: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "rgba(0,0,0,0.4)",
+        }}>
+          <div style={{
+            width: 20, height: 20, borderRadius: "50%",
+            border: "2px solid rgba(255,255,255,0.3)",
+            borderTop: "2px solid white",
+            animation: "spin 0.8s linear infinite",
+          }} />
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
-            if (gi === 0 && (pi === 2 || pi === 3)) {
-              return (
-                <Photo
-                  key={photo.id}
-                  photo={photo}
-                  size="sm"
-                  photos={group.photos}
-                  index={pi}
-                />
-              );
-            }
-
-            return (
-              <Photo
-                key={photo.id}
-                photo={photo}
-                size="sm"
-                photos={group.photos}
-                index={pi}
-              />
-            );
-          })}
+  // layout logic
+  if (gi === 0 && pi === 1) {
+    return <Photo key={photo.id} photo={photo} size="wide" photos={group.photos} index={pi} />;
+  }
+  if (gi === 0 && (pi === 2 || pi === 3)) {
+    return <Photo key={photo.id} photo={photo} size="sm" photos={group.photos} index={pi} />;
+  }
+  return <Photo key={photo.id} photo={photo} size="sm" photos={group.photos} index={pi} />;
+})}
         </div>
 
         {/* Scroll arrow */}
