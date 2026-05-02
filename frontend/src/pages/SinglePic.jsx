@@ -170,7 +170,7 @@ const handleDelete = async () => {
     const next = currentIndex + 1;
     if (next < photos.length) {
       navigate("/photo", {
-        state: { photo: { ...img, _id: img._id }, photos, index },
+        state: { photo: photos[next], photos, index: next },
         replace: true,
       });
     }
@@ -229,7 +229,7 @@ const handleDelete = async () => {
       }}>
         {/* Back button */}
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/home")}
           style={{
             display: "flex", alignItems: "center", gap: 8,
             background: "rgba(255,255,255,0.06)",
@@ -250,7 +250,7 @@ const handleDelete = async () => {
           }}
         >
           <span style={{ color: "rgba(255,255,255,0.4)" }}><PlaneIcon /></span>
-          back to gallery
+          home
         </button>
 
         {/* Dashed orbit arc top-right */}
@@ -282,7 +282,6 @@ const handleDelete = async () => {
           background: "rgba(8,16,30,0.6)",
           backdropFilter: "blur(10px)",
         }}>
-          <SideBtn icon={<ShareIcon />}   label="share"  delay={0.1} />
           <SideBtn icon={<EditIcon2 />} label="edit" delay={0.16} onClick={() => {
   navigate("/editphoto", {
     state: {
@@ -480,7 +479,7 @@ const handleDelete = async () => {
           onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.5)"}
           onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.2)"}
           >
-            back to gallery
+            home
           </div>
         </div>
       </div>

@@ -1,8 +1,41 @@
+// Add these at the TOP of authController.js with the other requires:
+const Image = require("../models/Image");
+const Album = require("../models/Album");
+const Collage = require("../models/Collage");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../config/emailService");
+const cloudinary = require("../config/cloudinary");
+
+// Add this new controller:
+exports.uploadProfilePic = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+    const streamifier = require("streamifier");
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "profile-pics", timeout: 60000 },
+        (error, result) => { if (error) reject(error); else resolve(result); }
+      );
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
+    });
+
+    // Save to user only — NOT to Image collection
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { profilePic: result.secure_url },
+      { new: true }
+    ).select("-password -verificationToken");
+
+    res.json({ profilePic: result.secure_url, user });
+  } catch (err) {
+    console.error("uploadProfilePic error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 exports.register = async (req, res) => {
   try {
@@ -123,5 +156,45 @@ exports.verifyEmail = async (req, res) => {
   } catch (err) {
     console.error("❌ Verification error:", err);
     res.status(500).json("Verification failed");
+  }
+};
+
+// GET /api/auth/profile/:userId
+// Then replace getProfile with this:
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId)
+      .select("-password -verificationToken");
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const [photoCount, albumCount, collageCount] = await Promise.all([
+      Image.countDocuments({ userId: user._id }),
+      Album.countDocuments({ userId: user._id }),
+      Collage.countDocuments({ userId: user._id }),
+    ]);
+
+    res.json({ ...user.toObject(), photoCount, albumCount, collageCount });
+  } catch (err) {
+    console.error("getProfile error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// PUT /api/auth/profile/:userId
+exports.updateProfile = async (req, res) => {
+  try {
+    const { username, password, profilePic } = req.body;
+    const update = {};
+    if (username) update.username = username;
+    if (profilePic) update.profilePic = profilePic;
+    if (password) {
+      const bcrypt = require("bcryptjs");
+      update.password = await bcrypt.hash(password, 10);
+    }
+    const user = await User.findByIdAndUpdate(req.params.userId, update, { new: true })
+      .select("-password -verificationToken");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

@@ -7,36 +7,33 @@ const fs = require("fs");
 
 const connectDB = require("./config/db");
 
-const authRoutes = require("./routes/auth");
-const imageRoutes = require("./routes/image");
-const aiRoutes = require("./routes/ai");
-const albumRoutes = require("./routes/albumRoutes");
+const authRoutes    = require("./routes/auth");
+const imageRoutes   = require("./routes/image");
+const aiRoutes      = require("./routes/ai");
+const membersRoutes = require("./routes/members"); // ← was missing
+const albumRoutes   = require("./routes/albumRoutes");
 const collageRoutes = require("./routes/collageRoutes");
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.get("/test-direct", (req, res) => res.send("Direct route working"));
+
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-app.use(cors());
-app.use(express.json());
-
 // Serve uploaded images statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/images", require("./routes/image"));
-app.use("/api/members", require("./routes/members"));
-
+// Routes — each registered exactly once
 app.use("/api/auth", authRoutes);
 app.use("/api/images", imageRoutes);
+app.use("/api/members", membersRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/collages", collageRoutes);
@@ -47,7 +44,6 @@ const startServer = async () => {
   try {
     await connectDB();
 
-    // ✅ Pre-load model so first upload is fast
     console.log("Loading AI model...");
     const { pipeline } = await import("@xenova/transformers");
     global._captioner = await pipeline(

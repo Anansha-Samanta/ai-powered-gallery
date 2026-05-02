@@ -481,87 +481,76 @@ const handleSave = async () => {
       </div>
 
       {/* ── GALLERY PICKER OVERLAY ── */}
-      {showGallery && (
-        <div
-          onClick={() => setShowGallery(false)}
-          style={{
-            position: "fixed", inset: 0, zIndex: 50,
-            background: "rgba(0,0,0,0.65)", backdropFilter: "blur(7px)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}
-        >
+        {showGallery && (
           <div
-            onClick={e => e.stopPropagation()}
+            onClick={() => setShowGallery(false)}
             style={{
-              background: "linear-gradient(135deg, #0d1b2e, #0a1828)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 18,
-              padding: 24,
-              width: "min(380px, 88vw)",
-              animation: "gallerySlide 0.3s ease both",
+              position: "fixed", inset: 0, zIndex: 50,
+              background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)",
+              display: "flex", alignItems: "center", justifyContent: "center",
             }}
           >
-            <div style={{
-              fontSize: 11, letterSpacing: "0.2em",
-              color: "rgba(255,255,255,0.45)",
-              fontFamily: "'Exo 2', sans-serif",
-              marginBottom: 16,
-            }}>
-              pick from gallery
-            </div>
-            <div style={{
-              display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8,
-            }}>
-<div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
-  {gallery.length === 0 ? (
-    <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, gridColumn: "span 4" }}>
-      loading...
-    </span>
-  ) : (
-    gallery.map(photo => (
-      <div
-        key={photo.id}
-        onClick={() => handlePickPhoto(photo)}
-        style={{
-          aspectRatio: "1/1", borderRadius: 10,
-          backgroundImage: `url(${photo.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center", cursor: "pointer",
-          transition: "transform 0.18s, box-shadow 0.18s",
-          border: photos.find(p => p.id === photo.id)
-            ? "2px solid rgba(100,180,255,0.6)"
-            : "1px solid rgba(255,255,255,0.08)",
-          opacity: photos.find(p => p.id === photo.id) ? 0.5 : 1,
-        }}
-        onMouseEnter={e => {
-          if (!photos.find(p => p.id === photo.id)) {
-            e.currentTarget.style.transform = "scale(1.07)";
-          }
-        }}
-        onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
-      />
-    ))
-  )}
-</div>
-            </div>
-            <button
-              onClick={() => setShowGallery(false)}
+            <div
+              onClick={e => e.stopPropagation()}
               style={{
-                marginTop: 16, width: "100%",
-                background: "rgba(255,255,255,0.06)",
+                background: "linear-gradient(135deg, #0d1b2e, #0a1828)",
                 border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 8, padding: "8px 0",
-                color: "rgba(255,255,255,0.45)",
-                fontSize: 11, letterSpacing: "0.1em",
-                fontFamily: "'Exo 2', sans-serif",
-                cursor: "pointer",
+                borderRadius: 18,
+                padding: 24,
+                width: "min(380px, 88vw)",
+                animation: "gallerySlide 0.3s ease both",
               }}
             >
-              done
-            </button>
+              <div style={{
+                fontSize: 11, letterSpacing: "0.2em",
+                color: "rgba(255,255,255,0.45)",
+                fontFamily: "'Exo 2', sans-serif",
+                marginBottom: 16,
+              }}>
+                pick from gallery
+              </div>
+              <div style={{
+                display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8,
+              }}>
+                {gallery.map(photo => (
+                  <div
+                    key={photo.id}
+                    onClick={() => handlePickPhoto(photo)}
+                    style={{
+                      aspectRatio: "1/1", borderRadius: 10,
+                      background: `url(${photo.src}) center/cover no-repeat`, cursor: "pointer",
+                      transition: "transform 0.18s, box-shadow 0.18s",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.transform = "scale(1.06)";
+                      e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.5)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() => setShowGallery(false)}
+                style={{
+                  marginTop: 16, width: "100%",
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: 8, padding: "8px 0",
+                  color: "rgba(255,255,255,0.45)",
+                  fontSize: 11, letterSpacing: "0.1em",
+                  fontFamily: "'Exo 2', sans-serif",
+                  cursor: "pointer",
+                }}
+              >
+                cancel
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

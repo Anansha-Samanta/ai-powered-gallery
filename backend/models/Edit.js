@@ -17,4 +17,6 @@ const editSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model("Edit", editSchema);
+module.exports = mongoose.models.Edit || mongoose.model("Edit", editSchema);
+
+

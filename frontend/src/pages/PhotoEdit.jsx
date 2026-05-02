@@ -186,15 +186,15 @@ const ToolTab = ({ id, icon, label, active, onClick }) => (
   <button
     onClick={() => onClick(id)}
     style={{
+      flex: 1,  // ← each tab takes equal width
       display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-      padding: "10px 14px",
-      background: active ? "rgba(255,255,255,0.1)" : "transparent",
+      padding: "12px 14px",
+      background: active ? "rgba(255,255,255,0.07)" : "transparent",
       border: "none",
       borderBottom: active ? "2px solid rgba(140,180,255,0.7)" : "2px solid transparent",
       cursor: "pointer",
       color: active ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.4)",
       transition: "background 0.2s, color 0.2s",
-      whiteSpace: "nowrap",
     }}
   >
     {icon}
@@ -566,8 +566,6 @@ const handleSave = async () => {
           }}>
             <ToolTab id="adjust"  icon={<FilterIcon />} label="adjust"  active={activeTab === "adjust"}  onClick={setActiveTab} />
             <ToolTab id="filters" icon={<CropIcon />}   label="filters" active={activeTab === "filters"} onClick={setActiveTab} />
-            <ToolTab id="text"    icon={<TextIcon />}   label="text"    active={activeTab === "text"}    onClick={setActiveTab} />
-            <ToolTab id="sticker" icon={<StickerIcon/>} label="sticker" active={activeTab === "sticker"} onClick={setActiveTab} />
           </div>
 
           {/* Tab content */}
@@ -644,40 +642,8 @@ const handleSave = async () => {
               </div>
             )}
 
-            {/* ── TEXT TAB ── */}
-            {activeTab === "text" && (
-              <div style={{
-                display: "flex", flexDirection: "column", gap: 14,
-                animation: "fadeUp 0.3s ease both",
-              }}>
-                <div style={{
-                  fontSize: 10, color: "rgba(255,255,255,0.3)",
-                  fontFamily: "'Exo 2', sans-serif", letterSpacing: "0.12em",
-                  textAlign: "center", padding: "20px 0",
-                  border: "1px dashed rgba(255,255,255,0.1)", borderRadius: 10,
-                }}>
-                  text overlay<br />
-                  <span style={{ fontSize: 8, opacity: 0.5 }}>coming soon</span>
-                </div>
-              </div>
-            )}
 
-            {/* ── STICKER TAB ── */}
-            {activeTab === "sticker" && (
-              <div style={{
-                animation: "fadeUp 0.3s ease both",
-              }}>
-                <div style={{
-                  fontSize: 10, color: "rgba(255,255,255,0.3)",
-                  fontFamily: "'Exo 2', sans-serif", letterSpacing: "0.12em",
-                  textAlign: "center", padding: "20px 0",
-                  border: "1px dashed rgba(255,255,255,0.1)", borderRadius: 10,
-                }}>
-                  stickers<br />
-                  <span style={{ fontSize: 8, opacity: 0.5 }}>coming soon</span>
-                </div>
-              </div>
-            )}
+
           </div>
 
           {/* Vertical deco arc */}

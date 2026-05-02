@@ -1,38 +1,25 @@
+// routes/ai.js
 const express = require("express");
 const router = express.Router();
- 
-// ✅ Using Hugging Face free SDXL API
-const { generateImage } = require("../services/huggingfaceService");
- 
+
+const { generateAndSave, getChatHistory, clearChatHistory, saveImageToGallery } = require("../controllers/aiController");
+
 console.log("AI FILE LOADED (HUGGINGFACE SDXL)");
- 
-router.post("/generate", async (req, res) => {
-  console.log("🚀 HuggingFace AI HIT");
- 
-  const prompt = req.body?.prompt;
- 
-  if (!prompt) {
-    return res.status(400).json({ error: "Prompt is required" });
-  }
- 
-  try {
-    console.log("🧠 Prompt:", prompt);
- 
-    const imageDataUrl = await generateImage(prompt);
- 
-    console.log("✅ IMAGE READY");
- 
-    return res.json({ result: imageDataUrl });
-  } catch (err) {
-    console.error("❌ HUGGINGFACE ERROR:", err.message);
- 
-    // Fallback: return a placeholder (still keeps UI working)
-    const fallback = `https://picsum.photos/seed/${encodeURIComponent(prompt)}/512`;
-    console.log("⚠️ Using fallback image");
- 
-    return res.json({ result: fallback });
-  }
+router.use((req, res, next) => {
+  console.log("AI ROUTER HIT:", req.method, req.url);
+  next();
 });
- 
+
+// POST /api/ai/generate — generate image, save to Cloudinary + DB, save chat msgs
+router.post("/generate", generateAndSave);
+
+// POST /api/ai/save-image — manually save an image to gallery
+router.post("/save-image", saveImageToGallery);
+
+// GET /api/ai/history/:userId — fetch full chat history with timestamps
+router.get("/history/:userId", getChatHistory);
+
+// DELETE /api/ai/history/:userId — clear all chat history for user
+router.delete("/history/:userId", clearChatHistory);
+
 module.exports = router;
- 
