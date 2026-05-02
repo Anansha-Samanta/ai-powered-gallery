@@ -22,9 +22,14 @@
     "mongodb": "^7.1.1",
     "mongoose": "^9.4.1",
     "multer": "^2.1.1",
+<<<<<<< HEAD
     "node-fetch": "^2.7.0",
     "replicate": "^1.4.0",
     "streamifier": "^0.1.1",
     "nodemailer": "^8.0.6"
+=======
+    "openai": "^6.35.0",
+    "replicate": "^1.4.0"
+>>>>>>> 9cd7329d48673b2d1d6ef7cfaba2b632c7f77400
   }
 }
