@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StarField from "../components/StarField";
@@ -55,11 +54,21 @@ const SendIcon = () => (
   </svg>
 );
 
+/* ⬇️ Download / Save icon */
+const DownloadIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+);
+
 export default function AIPage() {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [savedIds, setSavedIds] = useState(new Set());
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -87,7 +96,7 @@ export default function AIPage() {
 
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, role: "ai", imageUrl: data.result },
+        { id: Date.now() + 1, role: "ai", imageUrl: data.result, prompt: text },
       ]);
     } catch (err) {
       console.error("AI ERROR:", err);
@@ -100,6 +109,41 @@ export default function AIPage() {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+  };
+
+  /**
+   * Save / download the AI-generated image.
+   * Works for both base64 data URLs (HuggingFace) and regular http URLs (fallback).
+   */
+  const handleSaveImage = async (msg) => {
+    try {
+      const url = msg.imageUrl;
+      const filename = `ai-image-${Date.now()}.png`;
+
+      // If it's already a base64 data URL, download directly
+      if (url.startsWith("data:")) {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+      } else {
+        // For external URLs, fetch the blob and trigger download
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      }
+
+      // Mark as saved (visual feedback)
+      setSavedIds((prev) => new Set([...prev, msg.id]));
+    } catch (err) {
+      console.error("Save failed:", err);
+      alert("Could not save image. Please try right-clicking the image and saving it.");
     }
   };
 
@@ -183,18 +227,47 @@ export default function AIPage() {
               msg.role === "user" ? "flex-end" : "flex-start",
           }}>
             {msg.role === "ai" ? (
-              <div style={{
-                width: 240,
-                height: 190,
-                borderRadius: 16,
-                overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}>
-                <img
-                  src={msg.imageUrl}
-                  alt="AI"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{
+                  width: 240,
+                  height: 190,
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                }}>
+                  <img
+                    src={msg.imageUrl}
+                    alt="AI"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </div>
+
+                {/* ⬇️ SAVE BUTTON — below each AI image */}
+                <button
+                  onClick={() => handleSaveImage(msg)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    background: savedIds.has(msg.id)
+                      ? "rgba(80,180,120,0.25)"
+                      : "rgba(255,255,255,0.1)",
+                    border: savedIds.has(msg.id)
+                      ? "1px solid rgba(80,200,120,0.4)"
+                      : "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: 20,
+                    color: "white",
+                    fontSize: 13,
+                    padding: "6px 14px",
+                    cursor: "pointer",
+                    width: 240,
+                    transition: "background 0.2s, border 0.2s",
+                  }}
+                >
+                  <DownloadIcon />
+                  {savedIds.has(msg.id) ? "Saved!" : "Save Image"}
+                </button>
               </div>
             ) : (
               <div style={{
