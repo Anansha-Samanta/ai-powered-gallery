@@ -1,4 +1,4 @@
-const BASE = "${import.meta.env.VITE_API_URL}/api/albums";
+const BASE = `${import.meta.env.VITE_API_URL}/api/albums`;
 const getUserId = () => localStorage.getItem("userId");
 
 export const fetchAlbums = async () => {

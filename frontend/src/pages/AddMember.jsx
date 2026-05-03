@@ -55,7 +55,7 @@ const AddMember = () => {
     });
 
     try {
-      const response = await axios.post('${import.meta.env.VITE_API_URL}/api/members', formDataToSend, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/members`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

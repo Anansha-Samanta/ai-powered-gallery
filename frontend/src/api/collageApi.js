@@ -1,4 +1,4 @@
-const BASE = "${import.meta.env.VITE_API_URL}/api/collages";
+const BASE = `${import.meta.env.VITE_API_URL}/api/collages`;
 
 export const createCollage = async ({ userId, title, photos }) => {
   const res = await fetch(BASE, {

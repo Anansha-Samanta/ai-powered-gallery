@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { deleteCollage, updateCollage } from "../api/collageApi";
 import { fetchMyImages } from "../api/albumApi";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -35,12 +37,6 @@ const StarField = ({ count = 140 }) => {
 const PlaneIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
     <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-  </svg>
-);
-const ShareIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-    <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>
   </svg>
 );
 const EditIcon = () => (
@@ -115,7 +111,7 @@ const SideBtn = ({ icon, label, onClick, danger = false, delay = 0, active = fal
   );
 };
 
-// ── Collage cell (view mode) ──────────────────────────────────────────────────
+// ── Collage cell ──────────────────────────────────────────────────────────────
 const CollageCell = ({ slot, index, zoomed, editMode, onRemove, onSwap }) => {
   const [hov, setHov] = useState(false);
   return (
@@ -137,7 +133,6 @@ const CollageCell = ({ slot, index, zoomed, editMode, onRemove, onSwap }) => {
           ? "0 10px 30px rgba(0,0,0,0.45)"
           : "0 2px 10px rgba(0,0,0,0.25)",
         animation: `cellReveal 0.55s ${0.15 + index * 0.09}s both cubic-bezier(0.23,1,0.32,1)`,
-        cursor: editMode ? "default" : "default",
       }}
     >
       {slot?.src && (
@@ -162,7 +157,6 @@ const CollageCell = ({ slot, index, zoomed, editMode, onRemove, onSwap }) => {
           display: "flex", alignItems: "flex-start", justifyContent: "flex-end",
           padding: 6, gap: 5,
         }}>
-          {/* Swap button */}
           <button
             onClick={() => onSwap(index)}
             style={{
@@ -177,7 +171,6 @@ const CollageCell = ({ slot, index, zoomed, editMode, onRemove, onSwap }) => {
           >
             <SwapIcon />
           </button>
-          {/* Remove button */}
           <button
             onClick={() => onRemove(index)}
             style={{
@@ -195,7 +188,7 @@ const CollageCell = ({ slot, index, zoomed, editMode, onRemove, onSwap }) => {
         </div>
       )}
 
-      {/* Edit mode: empty slot — click to add */}
+      {/* Edit mode: empty slot */}
       {editMode && !slot?.src && (
         <div
           onClick={() => onSwap(index)}
@@ -356,18 +349,15 @@ export default function CollageView() {
   const [loaded, setLoaded] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-
-  // Edit mode state
   const [editMode, setEditMode] = useState(false);
-  const [slots, setSlots] = useState([]);          // { src } | null  ×4
+  const [slots, setSlots] = useState([]);
   const [saving, setSaving] = useState(false);
-  const [activeSlot, setActiveSlot] = useState(null); // index being swapped
+  const [activeSlot, setActiveSlot] = useState(null);
   const [showPicker, setShowPicker] = useState(false);
 
   const collage = location.state?.collage;
   const collageId = collage?._id;
 
-  // Initialise slots from collage.photos (array of URL strings)
   useEffect(() => {
     const photos = collage?.photos || collage?.slots?.map(s => s?.src) || [];
     const filled = photos.map(src => (src ? { src } : null));
@@ -379,7 +369,6 @@ export default function CollageView() {
 
   const filledCount = slots.filter(s => s?.src).length;
 
-  // ── Edit: remove a slot ──
   const handleRemove = (index) => {
     setSlots(prev => {
       const next = [...prev];
@@ -388,13 +377,11 @@ export default function CollageView() {
     });
   };
 
-  // ── Edit: open picker to swap/fill a slot ──
   const handleSwap = (index) => {
     setActiveSlot(index);
     setShowPicker(true);
   };
 
-  // ── Edit: pick confirmed ──
   const handlePick = (src) => {
     setSlots(prev => {
       const next = [...prev];
@@ -405,7 +392,6 @@ export default function CollageView() {
     setActiveSlot(null);
   };
 
-  // ── Edit: save to backend ──
   const handleSave = async () => {
     if (!collageId) { setEditMode(false); return; }
     setSaving(true);
@@ -421,7 +407,6 @@ export default function CollageView() {
     }
   };
 
-  // ── Edit: cancel — reset slots to original ──
   const handleCancelEdit = () => {
     const photos = collage?.photos || collage?.slots?.map(s => s?.src) || [];
     const filled = photos.map(src => (src ? { src } : null));
@@ -442,26 +427,11 @@ export default function CollageView() {
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600&display=swap');
-        @keyframes twinkle {
-          0%   { opacity: 0.1; transform: scale(0.8); }
-          100% { opacity: 0.85; transform: scale(1.3); }
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(14px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes cellReveal {
-          from { opacity: 0; transform: scale(0.88) translateY(12px); }
-          to   { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes dashFloat {
-          from { stroke-dashoffset: 0; }
-          to   { stroke-dashoffset: -220; }
-        }
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-8px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.8); } 100% { opacity: 0.85; transform: scale(1.3); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes cellReveal { from { opacity: 0; transform: scale(0.88) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes dashFloat { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -220; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
@@ -469,7 +439,6 @@ export default function CollageView() {
 
       <StarField count={160} />
 
-      {/* Picker modal */}
       {showPicker && (
         <ImagePickerModal
           onClose={() => { setShowPicker(false); setActiveSlot(null); }}
@@ -504,14 +473,8 @@ export default function CollageView() {
             fontFamily: "'Exo 2', sans-serif",
             transition: "background 0.2s, color 0.2s",
           }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = "rgba(255,255,255,0.11)";
-            e.currentTarget.style.color = "rgba(255,255,255,0.9)";
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-            e.currentTarget.style.color = "rgba(255,255,255,0.55)";
-          }}
+          onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.11)"; e.currentTarget.style.color = "rgba(255,255,255,0.9)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "rgba(255,255,255,0.55)"; }}
         >
           <span style={{ color: "rgba(255,255,255,0.4)" }}><PlaneIcon /></span>
           back
@@ -595,31 +558,17 @@ export default function CollageView() {
           backdropFilter: "blur(10px)",
           transition: "background 0.4s, border-color 0.4s",
         }}>
-          
-
-          {/* Edit / Done / Cancel */}
           {!editMode ? (
-            <SideBtn
-              icon={<EditIcon />}
-              label="edit"
-              delay={0.16}
-              onClick={() => setEditMode(true)}
-            />
+            <SideBtn icon={<EditIcon />} label="edit" delay={0.16} onClick={() => setEditMode(true)} />
           ) : (
             <>
               <SideBtn
                 icon={saving ? <span style={{ fontSize: 11 }}>…</span> : <CheckIcon />}
                 label={saving ? "saving" : "done"}
-                active
-                delay={0}
+                active delay={0}
                 onClick={handleSave}
               />
-              <SideBtn
-                icon={<XIcon />}
-                label="cancel"
-                delay={0.06}
-                onClick={handleCancelEdit}
-              />
+              <SideBtn icon={<XIcon />} label="cancel" delay={0.06} onClick={handleCancelEdit} />
             </>
           )}
 
@@ -661,7 +610,6 @@ export default function CollageView() {
           position: "relative", overflow: "hidden",
           flexDirection: "column", gap: 12,
         }}>
-          {/* Edit mode banner */}
           {editMode && (
             <div style={{
               padding: "8px 16px",
@@ -680,7 +628,6 @@ export default function CollageView() {
             </div>
           )}
 
-          {/* Glow */}
           <div style={{
             position: "absolute",
             width: "50%", height: "60%",
@@ -691,7 +638,6 @@ export default function CollageView() {
             transition: "background 0.4s",
           }} />
 
-          {/* Collage frame */}
           <div style={{
             position: "relative",
             transform: zoomed && !editMode ? "scale(1.15)" : "scale(1)",
@@ -708,7 +654,6 @@ export default function CollageView() {
               opacity: loaded ? undefined : 0,
               transition: "background 0.4s, border-color 0.4s",
             }}>
-              {/* 2×2 grid */}
               <div style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
@@ -719,18 +664,13 @@ export default function CollageView() {
               }}>
                 {slots.map((slot, i) => (
                   <CollageCell
-                    key={i}
-                    slot={slot}
-                    index={i}
-                    zoomed={zoomed}
-                    editMode={editMode}
-                    onRemove={handleRemove}
-                    onSwap={handleSwap}
+                    key={i} slot={slot} index={i}
+                    zoomed={zoomed} editMode={editMode}
+                    onRemove={handleRemove} onSwap={handleSwap}
                   />
                 ))}
               </div>
 
-              {/* Bottom strip */}
               <div style={{
                 marginTop: 12,
                 display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -754,7 +694,6 @@ export default function CollageView() {
               </div>
             </div>
 
-            {/* Corner orbit deco */}
             <svg style={{
               position: "absolute", top: -24, right: -24,
               width: 80, height: 80, pointerEvents: "none",

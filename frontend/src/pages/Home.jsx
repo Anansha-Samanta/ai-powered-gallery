@@ -153,7 +153,7 @@ const Photo = ({ photo, size = "sm", photos, index  }) => {
 // ── Main component ─────────────────────────────────────────────────────────────
 export default function Home() {
   // At the top of Home.jsx, add this line once:
-  const API = import.meta.env.VITE_API_URL || "${import.meta.env.VITE_API_URL}";
+  const API = import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL}`;
   const [activeNav, setActiveNav] = useState("home");
   const [loaded, setLoaded] = useState(false);
   const scrollRef = useRef(null);

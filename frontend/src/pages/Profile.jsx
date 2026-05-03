@@ -123,6 +123,7 @@ const InlineField = ({ label, value, onChange, onSave, onCancel, type = "text", 
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function Profile() {
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const navigate = useNavigate();
   const [loaded, setLoaded] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -154,7 +155,7 @@ export default function Profile() {
     const load = async () => {
       if (!userId) return;
       try {
-        const res = await fetch(`http://127.0.0.1:5000/api/auth/profile/${userId}`);
+        const res = await fetch(`${API}/api/auth/profile/${userId}`);
         const data = await res.json();
         setProfile(data);
         setStats({ photoCount: data.photoCount, albumCount: data.albumCount, collageCount: data.collageCount });
@@ -175,7 +176,7 @@ export default function Profile() {
     if (!nameVal.trim()) return;
     setSavingName(true);
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/auth/profile/${userId}`, {
+      const res = await fetch(`${API}/api/auth/profile/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: nameVal.trim() }),
@@ -195,8 +196,8 @@ export default function Profile() {
     if (passVal.length < 6) { showToast("Password must be 6+ chars", false); return; }
     setSavingPass(true);
     try {
-      await fetch(`http://127.0.0.1:5000/api/auth/profile/${userId}`, {
-        method: "PUT",
+      await fetch(`${API}/api/auth/profile/${userId}`, {
+          method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: passVal }),
       });
@@ -219,8 +220,8 @@ const handlePicUpload = async (e) => {
     formData.append("image", file);
 
     // ← hits auth route, NOT image route
-    const res = await fetch(`http://127.0.0.1:5000/api/auth/profile/${userId}/picture`, {
-      method: "POST",
+    const res = await fetch(`${API}/api/auth/profile/${userId}/picture`, {
+            method: "POST",
       body: formData,
     });
     const data = await res.json();
