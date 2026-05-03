@@ -67,7 +67,7 @@ exports.uploadImage = async (req, res) => {
           aiCaption: caption || "No caption",
           tags: allTags,
         });
-        console.log("✅ AI tags saved:", allTags);
+        console.log(" AI tags saved:", allTags);
       } catch (err) {
         console.error("Background AI failed:", err.message);
       }
