@@ -196,6 +196,8 @@ exports.updateProfile = async (req, res) => {
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+  };
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -247,4 +249,5 @@ exports.resetPassword = async (req, res) => {
     console.error("❌ Reset error:", err);
     res.status(500).json("Reset failed");
   }
+
 };
