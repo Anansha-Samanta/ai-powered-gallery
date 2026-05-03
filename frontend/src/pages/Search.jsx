@@ -206,8 +206,14 @@ export default function SearchPage() {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+<<<<<<< HEAD
         @keyframes shimmer {
           0% { opacity: 0.4; } 50% { opacity: 0.9; } 100% { opacity: 0.4; }
+=======
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateX(-12px); }
+          to   { opacity: 1; transform: translateX(0); }
+>>>>>>> dnsauth
         }
         ::-webkit-scrollbar { height: 3px; width: 3px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
@@ -219,8 +225,19 @@ export default function SearchPage() {
           color: rgba(255,255,255,0.45);
           transition: background 0.2s, color 0.2s;
         }
+<<<<<<< HEAD
         .nav-btn svg { width: 32px; height: 32px; }
         .planet-icon { width: 36px; height: 36px; }
+=======
+          .nav-btn svg {
+  width: 32px;
+  height: 32px;
+}
+  .planet-icon {
+  width: 36px;
+  height: 36px;
+}
+>>>>>>> dnsauth
         .nav-btn:hover  { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
         .nav-btn.active { background: rgba(255,255,255,0.13); color: white; }
         .nav-btn.special {
@@ -244,8 +261,21 @@ export default function SearchPage() {
           cursor: pointer; white-space: nowrap; flex-shrink: 0;
           transition: background 0.2s, color 0.2s, border-color 0.2s;
         }
+<<<<<<< HEAD
         .chip:hover { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.25); }
         .chip.active { background: rgba(80,130,220,0.2); border-color: rgba(80,130,220,0.4); color: white; }
+=======
+        .chip:hover {
+          background: rgba(255,255,255,0.14);
+          color: rgba(255,255,255,0.9);
+          border-color: rgba(255,255,255,0.25);
+        }
+        .chip.active {
+          background: rgba(80,130,220,0.2);
+          border-color: rgba(80,130,220,0.4);
+          color: white;
+        }
+>>>>>>> dnsauth
       `}</style>
 
       <StarField count={160} />

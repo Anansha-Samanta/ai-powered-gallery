@@ -10,7 +10,11 @@ const HomeNew = () => {
       {/* Navigation Button on Right */}
       <button 
         className="nav-button-right"
+<<<<<<< HEAD
         onClick={() => navigate('/landing')}
+=======
+        onClick={() => navigate('/home')}
+>>>>>>> dnsauth
       >
         Back to Main
       </button>

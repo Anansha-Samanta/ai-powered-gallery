@@ -343,7 +343,10 @@ const handleSave = async () => {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
         input[type=range] { -webkit-appearance: none; appearance: none; }
+<<<<<<< HEAD
         
+=======
+>>>>>>> dnsauth
       `}</style>
 
       <StarField count={100} />
