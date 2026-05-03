@@ -24,7 +24,7 @@ Install all dependencies using npm install.
 Create a .env file and add required variables such as MongoDB URI, port number, and Cloudinary credentials.
 Ensure MongoDB is running or your cloud database is accessible.
 Start the backend server using node app.js.
-Verify that the server runs successfully on http://localhost:5000.
+Verify that the server runs successfully on ${import.meta.env.VITE_API_URL}.
 2. Frontend Setup
 Navigate to the frontend folder using cd frontend.
 Install dependencies using npm install.

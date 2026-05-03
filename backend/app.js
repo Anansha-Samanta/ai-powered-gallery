@@ -4,21 +4,24 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-
 const connectDB = require("./config/db");
-
 const authRoutes    = require("./routes/auth");
 const imageRoutes   = require("./routes/image");
 const aiRoutes      = require("./routes/ai");
 const membersRoutes = require("./routes/members"); // ← was missing
 const albumRoutes   = require("./routes/albumRoutes");
 const collageRoutes = require("./routes/collageRoutes");
-
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://your-app.vercel.app",  // add this after Vercel deploy
+  ],
+  credentials: true
+}));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
-
 app.get("/test-direct", (req, res) => res.send("Direct route working"));
 
 // Create uploads directory if it doesn't exist
@@ -40,11 +43,15 @@ app.use("/api/collages", collageRoutes);
 
 app.get("/", (req, res) => res.send("API running"));
 
+
+// Serve uploaded images statically
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 const startServer = async () => {
   try {
     await connectDB();
-
-    console.log("Loading AI model...");
+     console.log("Loading AI model...");
     const { pipeline } = await import("@xenova/transformers");
     global._captioner = await pipeline(
       "image-to-text",
@@ -52,10 +59,12 @@ const startServer = async () => {
       { quantized: true }
     );
     console.log("AI model ready ✅");
-
+   
     const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+    app.listen(PORT, () =>
+      console.log(`Server running on port ${PORT}`)
+    );
   } catch (err) {
     console.error("Failed to start server:", err);
   }

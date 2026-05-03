@@ -59,19 +59,24 @@ exports.uploadImage = async (req, res) => {
 
     res.json(image);
 
-    setImmediate(async () => {
-      try {
-        const { caption, tags } = await generateTagsFromImage(imageUrl);
-        const allTags = [...new Set([...quickTags, ...tags])];
-        await Image.findByIdAndUpdate(image._id, {
-          aiCaption: caption || "No caption",
-          tags: allTags,
-        });
-        console.log(" AI tags saved:", allTags);
-      } catch (err) {
-        console.error("Background AI failed:", err.message);
-      }
+setImmediate(async () => {
+  try {
+    const { caption, tags } = await generateTagsFromImage(imageUrl);
+
+    // if AI returned tags, use them; otherwise fall back to quickTags
+    const finalTags = tags.length > 0
+      ? [...new Set([...tags, ...quickTags])]
+      : quickTags;
+
+    await Image.findByIdAndUpdate(image._id, {
+      aiCaption: caption || "No caption",
+      tags: finalTags,
     });
+    console.log("✅ AI tags saved:", finalTags);
+  } catch (err) {
+    console.error("Background AI failed:", err.message);
+  }
+});
 
   } catch (err) {
     console.error("Upload failed:", err.message);

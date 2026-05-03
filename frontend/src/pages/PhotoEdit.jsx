@@ -265,7 +265,7 @@ const handleSave = async () => {
     if (!photoId) { alert("No photo ID found"); setSaving(false); return; }
 
     const proxyRes = await fetch(
-      `http://localhost:5000/api/images/proxy?url=${encodeURIComponent(photo.src)}`
+      `${import.meta.env.VITE_API_URL}/api/images/proxy?url=${encodeURIComponent(photo.src)}`
     );
     if (!proxyRes.ok) throw new Error("Proxy fetch failed");
 
@@ -288,7 +288,7 @@ const handleSave = async () => {
     const formData = new FormData();
     formData.append("image", editedBlob, "edited.jpg");
 
-    const res = await fetch(`http://localhost:5000/api/images/${photoId}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/images/${photoId}`, {
       method: "PUT",
       body: formData,
     });

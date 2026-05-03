@@ -11,7 +11,7 @@ export default function VerifyEmail() {
     const verify = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/auth/verify-email/${token}`
+          `${import.meta.env.VITE_API_URL}/api/auth/verify-email/${token}`
         );
         console.log("STATUS:", res.status);
         if (res.ok) {

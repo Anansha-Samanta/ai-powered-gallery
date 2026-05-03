@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.sendVerificationEmail = async (email, token) => {
-  const verificationUrl = `${process.env.FRONTEND_URL}/verify-email/${token}`;
+  const verificationUrl = `${process.env.VITE_API_URL}/verify-email/${token}`;
 
   console.log("📤 Sending email to:", email);
 
@@ -36,7 +36,7 @@ exports.sendVerificationEmail = async (email, token) => {
 };
 
 exports.sendResetEmail = async (email, token) => {
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+  const resetUrl = `${process.env.VITE_API_URL}/reset-password/${token}`;
 
   console.log("📤 Sending reset email to:", email);
 

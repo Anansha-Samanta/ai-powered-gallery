@@ -152,25 +152,21 @@ const Photo = ({ photo, size = "sm", photos, index  }) => {
 
 // ── Main component ─────────────────────────────────────────────────────────────
 export default function Home() {
+  // At the top of Home.jsx, add this line once:
+  const API = import.meta.env.VITE_API_URL || "${import.meta.env.VITE_API_URL}";
   const [activeNav, setActiveNav] = useState("home");
   const [loaded, setLoaded] = useState(false);
   const scrollRef = useRef(null);
   const navigate = useNavigate();
-
-  useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
-
-  
-
-
-
-
   const [images, setImages] = useState([]);
 
+  useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+  
 useEffect(() => {
   const fetchImages = async () => {
     const userId = localStorage.getItem("userId");
 
-    const res = await fetch(`http://localhost:5000/api/images/${userId}`);
+    const res = await fetch(`${API}/api/images/${userId}`);
     const data = await res.json();
 
     setImages(data);
@@ -190,7 +186,7 @@ const buildGroups = (images) => {
 
     groupsMap[date].push({
       id: img._id,
-      src: img.imageUrl,   // 🔥 Cloudinary URL
+      src: img.imageUrl,   
       label: img.title || "image",
       wide: false,
     });
@@ -262,7 +258,7 @@ const handleUpload = async (file) => {
     console.log("☁️ Cloudinary done:", cloudData.secure_url);
 
     // 3. save metadata to your backend
-    const metaRes = await fetch("http://localhost:5000/api/images/save-meta", {
+    const metaRes = await fetch(`${API}/api/images/save-meta`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

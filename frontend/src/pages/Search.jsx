@@ -154,7 +154,7 @@ export default function SearchPage() {
     try {
       const userId = localStorage.getItem("userId");
       const res = await fetch(
-        `http://localhost:5000/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
+        `${import.meta.env.VITE_API_URL}/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
       );
       const data = await res.json();
 

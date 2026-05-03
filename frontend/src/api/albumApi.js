@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5000/api/albums";
+const BASE = "${import.meta.env.VITE_API_URL}/api/albums";
 const getUserId = () => localStorage.getItem("userId");
 
 export const fetchAlbums = async () => {
@@ -65,7 +65,7 @@ export const deleteAlbum = async (id) => {
 export const fetchMyImages = async () => {
   const userId = getUserId();
   if (!userId) throw new Error("No userId in localStorage");
-  const res = await fetch(`http://localhost:5000/api/images/${userId}`);
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/images/${userId}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch images");
