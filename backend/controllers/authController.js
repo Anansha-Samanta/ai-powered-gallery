@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../config/emailService");
+const { sendVerificationEmail, sendResetEmail } = require("../config/emailService");
 
 exports.register = async (req, res) => {
   try {
@@ -123,5 +123,58 @@ exports.verifyEmail = async (req, res) => {
   } catch (err) {
     console.error("❌ Verification error:", err);
     res.status(500).json("Verification failed");
+  }
+};
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return res.status(400).json("User not found");
+
+    const token = crypto.randomBytes(32).toString("hex");
+
+    user.resetToken = token;
+    user.resetTokenExpires = Date.now() + 15 * 60 * 1000; // 15 mins
+    await user.save();
+
+    await sendResetEmail(user.email, token);
+
+    res.json("Reset email sent");
+
+  } catch (err) {
+    console.error("❌ Forgot password error:", err);
+    res.status(500).json("Error sending reset email");
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json("Invalid or expired token");
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    user.password = hashed;
+    user.resetToken = null;
+    user.resetTokenExpires = null;
+
+    await user.save();
+
+    res.json("Password reset successful");
+
+  } catch (err) {
+    console.error("❌ Reset error:", err);
+    res.status(500).json("Reset failed");
   }
 };

@@ -21,7 +21,8 @@ import ViewMembers from "./pages/ViewMembers";
 import MemberDetails from "./pages/MemberDetails";
 import VerifyEmail from "./pages/VerifyEmail";
 
-
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -47,6 +48,9 @@ function App() {
         <Route path="/view-members" element={<ViewMembers />} />
         <Route path="/member/:id" element={<MemberDetails />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
+
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         
       </Routes>
     </BrowserRouter>

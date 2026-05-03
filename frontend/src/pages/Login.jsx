@@ -330,18 +330,18 @@ const handleLogin = async () => {
 
         {/* Forgot password */}
         <div style={{ textAlign: "right", marginBottom: 20 }}>
-          <a href="#" style={{
+         <a
+          style={{
             fontSize: 11,
             color: "rgba(255,255,255,0.45)",
             textDecoration: "none",
             fontFamily: "'Exo 2', sans-serif",
-            transition: "color 0.2s",
+            cursor: "pointer"
           }}
-          onMouseEnter={e => e.target.style.color = "rgba(255,255,255,0.75)"}
-          onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.45)"}
-          >
-            Forgot Password?
-          </a>
+          onClick={() => navigate("/forgot-password")}
+        >
+          Forgot Password?
+        </a>
         </div>
 
         {/* Sign in button */}
