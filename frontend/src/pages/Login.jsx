@@ -336,7 +336,7 @@ const handleLogin = async () => {
             textDecoration: "none",
             fontFamily: "'Exo 2', sans-serif",
             transition: "color 0.2s",
-          }}
+          }} onClick={() => navigate("/forgot-password")}
           onMouseEnter={e => e.target.style.color = "rgba(255,255,255,0.75)"}
           onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.45)"}
           >

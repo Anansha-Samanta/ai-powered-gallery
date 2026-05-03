@@ -14,12 +14,15 @@ import Profile from "./pages/Profile";
 import PhotoEdit from "./pages/PhotoEdit";
 import Register from "./pages/Register";
 
+import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+
 // Team Management Pages
 import HomeNew from "./pages/HomeNew";
 import AddMember from "./pages/AddMember";
 import ViewMembers from "./pages/ViewMembers";
 import MemberDetails from "./pages/MemberDetails";
-import VerifyEmail from "./pages/VerifyEmail";
 
 
 
@@ -48,6 +51,8 @@ function App() {
         <Route path="/view-members" element={<ViewMembers />} />
         <Route path="/member/:id" element={<MemberDetails />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         
       </Routes>
     </BrowserRouter>
