@@ -1,23 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import searchgrid8 from "../assets/searchgrid8.jfif";
-import searchgrid9 from "../assets/searchgrid9.jfif";
-import searchgrid2 from "../assets/searchgrid2.jfif";
-import searchgrid7 from "../assets/searchgrid7.jfif";
-import flower1 from "../assets/flower1.jfif";
-import flower6 from "../assets/flower6.jfif";
-import home1 from "../assets/home1.jfif";
 
-import searchgrid3 from "../assets/searchgrid3.jfif";
-import searchgrid1 from "../assets/searchgrid1.jfif";
-import searchgrid5 from "../assets/searchgrid5.jfif";
-import searchgrid4 from "../assets/searchgrid4.jfif";
-import flower3 from "../assets/flower3.jfif";
-import flower4 from "../assets/flower4.jfif";
-
-import searchgrid6 from "../assets/searchgrid6.jfif";
-import flower2 from "../assets/flower2.jfif";
-import flower5 from "../assets/flower5.jfif";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
@@ -102,39 +85,7 @@ const uploadTile = {
   label: "upload",
 };
 
-const GROUPS = [
-  {
-    date: "WED, 6-2-26",
-    photos: [
-      { id: 1, src: flower1, wide: true, label: "flower" },
-      { id: 2, src: home1, wide: false, label: "ocean" },
-      { id: 3, src: searchgrid2, wide: false, label: "Candle" },
-      { id: 4, src: searchgrid8, wide: false, label: "starfish" },
-      { id: 5, src: searchgrid9, wide: false, label: "sunset" },
-      { id: 6, src: searchgrid7, wide: false, label: "fish" },
-      { id: 7, src: flower6, wide: false, label: "meadow" },
-    ],
-  },
-  {
-    date: "THURS, 7-2-26",
-    photos: [
-      { id: 8, src: searchgrid3, wide: true, label: "balloons" },
-      { id: 9, src: searchgrid1, wide: false, label: "ocean" },
-      { id: 10, src: searchgrid5, wide: false, label: "aesthetic" },
-      { id: 11, src: searchgrid4, wide: false, label: "candle" },
-      { id: 12, src: flower3, wide: false, label: "flower" },
-      { id: 13, src: flower4, wide: false, label: "flower" },
-    ],
-  },
-  {
-    date: "FRI, 8-2-26",
-    photos: [
-      { id: 14, src: searchgrid6, wide: false, label: "bug" },
-      { id: 15, src: flower2, wide: false, label: "flower" },
-      { id: 16, src: flower5, wide: true, label: "flower" },
-    ],
-  },
-];
+
 
 const Photo = ({ photo, size = "sm", photos, index  }) => {
   const navigate = useNavigate();

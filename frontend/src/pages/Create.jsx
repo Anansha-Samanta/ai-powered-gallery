@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import decor1 from "../assets/decor1.jfif";
-import place1 from "../assets/place1.jfif";
+
 import { fetchAlbums } from "../api/albumApi";
 import { getUserCollages } from "../api/collageApi";
 

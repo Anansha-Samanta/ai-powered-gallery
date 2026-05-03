@@ -2,14 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchMyImages, createAlbum } from "../api/albumApi";
 
-import searchgrid1 from "../assets/searchgrid1.jfif";
-import searchgrid2 from "../assets/searchgrid2.jfif";
-import searchgrid3 from "../assets/searchgrid3.jfif";
-import searchgrid4 from "../assets/searchgrid4.jfif";
-import searchgrid5 from "../assets/searchgrid5.jfif";
-import searchgrid6 from "../assets/searchgrid6.jfif";
-import searchgrid7 from "../assets/searchgrid7.jfif";
-import searchgrid8 from "../assets/searchgrid8.jfif";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
