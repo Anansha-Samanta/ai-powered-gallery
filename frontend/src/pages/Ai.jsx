@@ -229,7 +229,7 @@ export default function AIPage() {
     const fetchHistory = async () => {
       if (!userId) { setHistoryLoading(false); return; }
       try {
-        const res = await apiFetch(`api/ai/history/${userId}`);
+        const res = await apiFetch(`/api/ai/history/${userId}`);
         const data = await res.json();
         setMessages(data.map((m) => ({
           id: m._id, _id: m._id, role: m.role,
@@ -266,7 +266,7 @@ export default function AIPage() {
     ]);
 
     try {
-      const res = await apiFetch("api/ai/generate", {
+      const res = await apiFetch("/api/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: text, userId }),
@@ -294,7 +294,7 @@ export default function AIPage() {
     if (!userId || !msg.imageUrl || savingId) return;
     setSavingId(msg.id);
     try {
-      const res = await apiFetch("api/ai/save-image", {
+      const res = await apiFetch("/api/ai/save-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, imageUrl: msg.imageUrl, prompt: msg.prompt || "" }),
@@ -317,7 +317,7 @@ export default function AIPage() {
 
   const handleClearHistory = async () => {
     try {
-      await apiFetch(`api/ai/history/${userId}`, { method: "DELETE" });
+      await apiFetch(`/api/ai/history/${userId}`, { method: "DELETE" });
       setMessages([]);
       setShowClearConfirm(false);
     } catch (err) {
