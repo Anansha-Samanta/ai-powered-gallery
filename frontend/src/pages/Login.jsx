@@ -365,12 +365,7 @@ const handleLogin = async () => {
           <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.1)" }} />
         </div>
 
-        {/* Social buttons */}
-        <div style={{ display: "flex", gap: 10, marginBottom: 22 }}>
-          <button className="social-btn"><GoogleIcon /></button>
-          <button className="social-btn"><GithubIcon /></button>
-          <button className="social-btn"><FacebookIcon /></button>
-        </div>
+  
 
         {/* Register link */}
         <div style={{ textAlign: "center" }}>
