@@ -1,5 +1,5 @@
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
-
+console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -14,11 +14,21 @@ const collageRoutes = require("./routes/collageRoutes");
 const app = express();
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://your-app.vercel.app",  // add this after Vercel deploy
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    const allowed = [
+      "http://localhost:5173",
+      "https://ai-gallery-eta.vercel.app",
+    ];
+    // Allow all Vercel preview deployments
+    if (!origin || allowed.includes(origin) || origin.endsWith(".vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning']
 }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));

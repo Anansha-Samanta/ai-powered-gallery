@@ -27,6 +27,7 @@
     "nodemailer": "^8.0.6",
     "openai": "^6.35.0",
     "replicate": "^1.4.0",
+    "simple-swizzle": "^0.2.4",
     "streamifier": "^0.1.1"
   }
 }
