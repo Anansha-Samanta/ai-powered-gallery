@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import { apiFetch } from "../api/client";
 export default function ResetPassword() {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [done, setDone] = useState(false);
-  import { apiFetch } from "../api/client";
+  
 
 
   useEffect(() => {
