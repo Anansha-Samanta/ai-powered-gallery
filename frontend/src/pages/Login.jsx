@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../api/client";
 
 const StarField = ({ count = 160 }) => {
   const stars = useRef(
@@ -86,38 +87,28 @@ export default function Login() {
   }, []);
 
 const handleLogin = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-           "ngrok-skip-browser-warning": "true",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
+  try {
+    const res = await apiFetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        // ✅ Show specific error message (including verification error)
-        alert(data || "Login failed");
-        return;
-      }
-
-      // ✅ store token + user
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.user._id);
-
-      navigate("/home");
-
-    } catch (err) {
-      console.error(err);
-      alert("Server error");
+    if (!res.ok) {
+      alert(data || "Login failed");
+      return;
     }
-  };
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("userId", data.user._id);
+    navigate("/home");
+
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
+};
 
   return (
     <div style={{
