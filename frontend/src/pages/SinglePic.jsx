@@ -133,7 +133,7 @@ const handleDelete = async () => {
       return;
     }
 
-    const res = await apifetch(`/api/images/${id}`, {
+    const res = await apiFetch(`/api/images/${id}`, {
       method: "DELETE",
     });
 

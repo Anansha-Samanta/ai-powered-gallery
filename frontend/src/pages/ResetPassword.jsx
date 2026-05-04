@@ -16,7 +16,7 @@ export default function ResetPassword() {
   }, []);
 
   const handleReset = async () => {
-    const res = await apifetch(
+    const res = await apiFetch(
       `/api/auth/reset-password/${token}`,
       {
         method: "POST",

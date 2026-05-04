@@ -222,7 +222,7 @@ const handleSubmit = async () => {
   setSubmitting(true);
 
   try {
-    const res = await apifetch(`/api/auth/register`, {
+    const res = await apiFetch(`/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

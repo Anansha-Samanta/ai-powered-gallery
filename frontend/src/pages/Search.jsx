@@ -154,7 +154,7 @@ export default function SearchPage() {
     setLoading(true);
     try {
       const userId = localStorage.getItem("userId");
-      const res = await apifetch(
+      const res = await apiFetch(
         `/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
       );
       const data = await res.json();

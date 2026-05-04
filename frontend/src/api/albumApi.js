@@ -4,7 +4,7 @@ const getUserId = () => localStorage.getItem("userId");
 
 export const fetchAlbums = async () => {
   const userId = getUserId();
-  const res = await apifetch(`${BASE}?userId=${userId}`);
+  const res = await apiFetch(`${BASE}?userId=${userId}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch albums");
@@ -13,7 +13,7 @@ export const fetchAlbums = async () => {
 };
 
 export const fetchAlbum = async (id) => {
-  const res = await apifetch(`${BASE}/${id}`);
+  const res = await apiFetch(`${BASE}/${id}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch album");
@@ -22,7 +22,7 @@ export const fetchAlbum = async (id) => {
 };
 
 export const createAlbum = async ({ title, imageIds }) => {
-  const res = await apifetch(BASE, {
+  const res = await apiFetch(BASE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -40,7 +40,7 @@ export const createAlbum = async ({ title, imageIds }) => {
 };
 
 export const updateAlbum = async (id, { title, addImageIds, removeImageIds }) => {
-  const res = await apifetch(`${BASE}/${id}`, {
+  const res = await apiFetch(`${BASE}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, addImageIds, removeImageIds })
@@ -53,7 +53,7 @@ export const updateAlbum = async (id, { title, addImageIds, removeImageIds }) =>
 };
 
 export const deleteAlbum = async (id) => {
-  const res = await apifetch(`${BASE}/${id}`, {
+  const res = await apiFetch(`${BASE}/${id}`, {
     method: "DELETE"
   });
   if (!res.ok) {
@@ -66,7 +66,7 @@ export const deleteAlbum = async (id) => {
 export const fetchMyImages = async () => {
   const userId = getUserId();
   if (!userId) throw new Error("No userId in localStorage");
-  const res = await apifetch(`/api/images/${userId}`);
+  const res = await apiFetch(`/api/images/${userId}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch images");

@@ -165,7 +165,7 @@ useEffect(() => {
   const fetchImages = async () => {
     const userId = localStorage.getItem("userId");
 
-    const res = await apifetch(`/api/images/${userId}`);
+    const res = await apiFetch(`/api/images/${userId}`);
     const data = await res.json();
 
     setImages(data);
@@ -257,7 +257,7 @@ const handleUpload = async (file) => {
     console.log("☁️ Cloudinary done:", cloudData.secure_url);
 
     // 3. save metadata to your backend
-    const metaRes = await apifetch(`/api/images/save-meta`, {
+    const metaRes = await apiFetch(`/api/images/save-meta`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -155,7 +155,7 @@ export default function Profile() {
     const load = async () => {
       if (!userId) return;
       try {
-        const res = await apifetch(`/api/auth/profile/${userId}`);
+        const res = await apiFetch(`/api/auth/profile/${userId}`);
         const data = await res.json();
         setProfile(data);
         setStats({ photoCount: data.photoCount, albumCount: data.albumCount, collageCount: data.collageCount });
@@ -196,7 +196,7 @@ export default function Profile() {
     if (passVal.length < 6) { showToast("Password must be 6+ chars", false); return; }
     setSavingPass(true);
     try {
-      await apifetch(`/api/auth/profile/${userId}`, {
+      await apiFetch(`/api/auth/profile/${userId}`, {
           method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: passVal }),
@@ -220,7 +220,7 @@ const handlePicUpload = async (e) => {
     formData.append("image", file);
 
     // ← hits auth route, NOT image route
-    const res = await apifetch(`/api/auth/profile/${userId}/picture`, {
+    const res = await apiFetch(`/api/auth/profile/${userId}/picture`, {
             method: "POST",
       body: formData,
     });
