@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { apiFetch } from "../api/client";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
@@ -153,7 +153,6 @@ const Photo = ({ photo, size = "sm", photos, index  }) => {
 // ── Main component ─────────────────────────────────────────────────────────────
 export default function Home() {
   // At the top of Home.jsx, add this line once:
-  const API = import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL}`;
   const [activeNav, setActiveNav] = useState("home");
   const [loaded, setLoaded] = useState(false);
   const scrollRef = useRef(null);
@@ -166,7 +165,7 @@ useEffect(() => {
   const fetchImages = async () => {
     const userId = localStorage.getItem("userId");
 
-    const res = await fetch(`${API}/api/images/${userId}`);
+    const res = await apifetch(`/api/images/${userId}`);
     const data = await res.json();
 
     setImages(data);
@@ -258,15 +257,15 @@ const handleUpload = async (file) => {
     console.log("☁️ Cloudinary done:", cloudData.secure_url);
 
     // 3. save metadata to your backend
-    const metaRes = await fetch(`${API}/api/images/save-meta`, {
+    const metaRes = await apifetch(`/api/images/save-meta`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: localStorage.getItem("userId"),
-        imageUrl: cloudData.secure_url,
-        publicId: cloudData.public_id,
-        title: file.name.split(".")[0],
-      }),
+    userId: localStorage.getItem("userId"),
+    imageUrl: cloudData.secure_url,
+    publicId: cloudData.public_id,
+    title: file.name.split(".")[0],
+  }),
     });
 
     if (!metaRes.ok) throw new Error("Meta save failed");

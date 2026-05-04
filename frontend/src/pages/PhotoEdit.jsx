@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { apiFetch } from "../api/client";
 
 const StarField = ({ count = 100 }) => {
   const stars = useRef(
@@ -264,9 +265,7 @@ const handleSave = async () => {
     const photoId = photo._id || photo.id;
     if (!photoId) { alert("No photo ID found"); setSaving(false); return; }
 
-    const proxyRes = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/images/proxy?url=${encodeURIComponent(photo.src)}`
-    );
+const proxyRes = await apiFetch(`/api/images/proxy?url=${encodeURIComponent(photo.src)}`);
     if (!proxyRes.ok) throw new Error("Proxy fetch failed");
 
     const blob = await proxyRes.blob();
@@ -288,7 +287,7 @@ const handleSave = async () => {
     const formData = new FormData();
     formData.append("image", editedBlob, "edited.jpg");
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/images/${photoId}`, {
+    const res = await apiFetch(`/api/images/${photoId}`, {
       method: "PUT",
       body: formData,
     });

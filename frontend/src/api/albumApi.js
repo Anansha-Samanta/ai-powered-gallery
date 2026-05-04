@@ -1,9 +1,10 @@
-const BASE = `${import.meta.env.VITE_API_URL}/api/albums`;
+import { apiFetch } from "./client";
+const BASE = `/api/albums`;
 const getUserId = () => localStorage.getItem("userId");
 
 export const fetchAlbums = async () => {
   const userId = getUserId();
-  const res = await fetch(`${BASE}?userId=${userId}`);
+  const res = await apifetch(`${BASE}?userId=${userId}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch albums");
@@ -12,7 +13,7 @@ export const fetchAlbums = async () => {
 };
 
 export const fetchAlbum = async (id) => {
-  const res = await fetch(`${BASE}/${id}`);
+  const res = await apifetch(`${BASE}/${id}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch album");
@@ -21,7 +22,7 @@ export const fetchAlbum = async (id) => {
 };
 
 export const createAlbum = async ({ title, imageIds }) => {
-  const res = await fetch(BASE, {
+  const res = await apifetch(BASE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -39,7 +40,7 @@ export const createAlbum = async ({ title, imageIds }) => {
 };
 
 export const updateAlbum = async (id, { title, addImageIds, removeImageIds }) => {
-  const res = await fetch(`${BASE}/${id}`, {
+  const res = await apifetch(`${BASE}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, addImageIds, removeImageIds })
@@ -52,7 +53,7 @@ export const updateAlbum = async (id, { title, addImageIds, removeImageIds }) =>
 };
 
 export const deleteAlbum = async (id) => {
-  const res = await fetch(`${BASE}/${id}`, {
+  const res = await apifetch(`${BASE}/${id}`, {
     method: "DELETE"
   });
   if (!res.ok) {
@@ -65,7 +66,7 @@ export const deleteAlbum = async (id) => {
 export const fetchMyImages = async () => {
   const userId = getUserId();
   if (!userId) throw new Error("No userId in localStorage");
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/images/${userId}`);
+  const res = await apifetch(`/api/images/${userId}`);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to fetch images");

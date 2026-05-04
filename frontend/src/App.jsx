@@ -23,6 +23,8 @@ import HomeNew from "./pages/HomeNew";
 import AddMember from "./pages/AddMember";
 import ViewMembers from "./pages/ViewMembers";
 import MemberDetails from "./pages/MemberDetails";
+import axios from "axios";
+axios.defaults.headers.common["ngrok-skip-browser-warning"] = "true";
 
 
 

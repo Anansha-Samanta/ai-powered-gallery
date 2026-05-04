@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import { apiFetch } from "../api/client";
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
     Array.from({ length: count }, (_, i) => ({
@@ -133,7 +133,7 @@ const handleDelete = async () => {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/images/${id}`, {
+    const res = await apifetch(`/api/images/${id}`, {
       method: "DELETE",
     });
 

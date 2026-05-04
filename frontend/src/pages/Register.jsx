@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../api/client";
 
 const StarField = ({ count = 140 }) => {
   const stars = useRef(
@@ -221,7 +222,7 @@ const handleSubmit = async () => {
   setSubmitting(true);
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+    const res = await apifetch(`/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

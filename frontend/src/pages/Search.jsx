@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from "../api/client";
 
 const StarField = ({ count = 150 }) => {
   const stars = useRef(
@@ -153,8 +154,8 @@ export default function SearchPage() {
     setLoading(true);
     try {
       const userId = localStorage.getItem("userId");
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
+      const res = await apifetch(
+        `/api/images/search?userId=${userId}&q=${encodeURIComponent(trimmed)}`
       );
       const data = await res.json();
 

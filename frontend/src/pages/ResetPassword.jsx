@@ -8,14 +8,16 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [done, setDone] = useState(false);
+  import { apiFetch } from "../api/client";
+
 
   useEffect(() => {
     setTimeout(() => setLoaded(true), 80);
   }, []);
 
   const handleReset = async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/auth/reset-password/${token}`,
+    const res = await apifetch(
+      `/api/auth/reset-password/${token}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
