@@ -68,16 +68,6 @@ export default function AlbumMake() {
   const [gallery, setGallery] = useState([]);
   const [saving, setSaving] = useState(false);
 
-const GALLERY = [
-  { id: 1, src: searchgrid1 },
-  { id: 2, src: searchgrid2 },
-  { id: 3, src: searchgrid3 },
-  { id: 4, src: searchgrid4 },
-  { id: 5, src: searchgrid5 },
-  { id: 6, src: searchgrid6 },
-  { id: 7, src: searchgrid7 },
-  { id: 8, src: searchgrid8 },
-];
 
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
 
