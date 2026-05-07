@@ -11,7 +11,7 @@ A full-stack photo gallery application where users can upload images, get AI-gen
 
 ## Environment Variables
 
-Create a file called `.env` inside the `backend/` folder and fill in the values below. This file is already in `.gitignore` so it will never be committed to Git.
+Created a file called `.env` inside the `backend/` folder and fill in the values below. This file is already in `.gitignore` so it will never be committed to Git.
 
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/<dbname>?retryWrites=true&w=majority
 JWT_SECRET=your_super_secret_key_here
